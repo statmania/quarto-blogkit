@@ -545,8 +545,8 @@ a.bk-author-link:hover{ color: var(--bk-cyan); }
 /* ================================================================
    Light theme (Quarto's navbar toggle adds body.quarto-light).
    Dark is the default and is untouched above. In light mode the page
-   itself is light, while the navbar, post banner and homepage hero stay
-   dark bands (they re-assert the dark palette below).
+   itself, the navbar, post banner and homepage hero are
+   light too.
    ================================================================ */
 :root:has(body.quarto-light){
   --bk-bg: #eef3fb;
@@ -558,19 +558,25 @@ a.bk-author-link:hover{ color: var(--bk-cyan); }
   --bk-text: #1b2542;
   --bk-muted: #56628a;
 }
-/* dark bands keep the dark palette inside light mode */
+/* navbar, post banner and homepage hero are light too */
 body.quarto-light #quarto-header,
+body.quarto-light #quarto-header .navbar{
+  background: rgba(255,255,255,0.88) !important;
+  border-bottom-color: rgba(20,40,90,0.12);
+}
+body.quarto-light #quarto-header .navbar-brand,
+body.quarto-light #quarto-header .navbar-nav .nav-link,
+body.quarto-light #quarto-header .navbar-title{ color: #1b2542 !important; }
+body.quarto-light #quarto-header .navbar-nav .nav-link:hover,
+body.quarto-light #quarto-header .navbar-nav .nav-link.active{ color: var(--bk-cyan) !important; }
+body.quarto-light #quarto-header .navbar-toggler-icon{ filter: invert(1); }
 body.quarto-light #title-block-header.quarto-title-block,
-body.quarto-light .quarto-title-banner,
+body.quarto-light .quarto-title-banner{
+  background: radial-gradient(1200px 400px at 50% -20%, #ffffff 0%, var(--bk-bg) 70%);
+  border-bottom-color: rgba(20,40,90,0.12);
+}
 body.quarto-light .bk-hero{
-  --bk-bg: #05070d;
-  --bk-bg2: #0a0f1e;
-  --bk-cyan: #00e5ff;
-  --bk-purple: #a855f7;
-  --bk-pink: #ff2fb4;
-  --bk-line: rgba(0,229,255,0.25);
-  --bk-text: #e8ecf7;
-  --bk-muted: #9aa4c2;
+  background: radial-gradient(1200px 500px at 50% -10%, #ffffff 0%, var(--bk-bg) 60%);
 }
 
 /* page panel + text */
@@ -664,4 +670,7 @@ body.quarto-light div.callout code{ color: #0b5d75; background: rgba(0,122,153,.
 }
 .bk-hero p.bk-subtitle{ max-width: 620px; margin: 0 auto; color: var(--bk-muted); font-size: 1.1rem; }
 body.quarto-light main.content .bk-hero h1.bk-title{ color: transparent; }
-body.quarto-light main.content .bk-hero p.bk-subtitle{ color: #aab4d0; }
+body.quarto-light main.content .bk-hero p.bk-subtitle{ color: var(--bk-muted); }
+body.quarto-light .quarto-title-meta-heading{ color: #56628a; }
+body.quarto-light .quarto-title-meta-contents,
+body.quarto-light .quarto-title-meta-contents p{ color: #25304f; }
