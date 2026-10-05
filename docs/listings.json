@@ -1,0 +1,13 @@
+[
+  {
+    "listing": "/index.html",
+    "items": [
+      "/posts/writing-posts-with-tags.html",
+      "/posts/welcome-to-blogkit.html",
+      "/posts/authors-and-profiles.html",
+      "/posts/exercises-with-hints.html",
+      "/posts/publish-with-one-command.html",
+      "/posts/customising-the-theme.html"
+    ]
+  }
+]

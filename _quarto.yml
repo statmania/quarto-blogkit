@@ -1,0 +1,30 @@
+project:
+  type: website
+  output-dir: docs            # GitHub Pages: Settings > Pages > "main" branch, "/docs" folder
+  pre-render: _extensions/blogkit/build_site_data.py
+  resources:
+    - img/placeholder.svg      # used by the homepage listing for posts without an image
+  render:
+    - "*.qmd"
+    - "posts/*.qmd"
+    - "authors/*.qmd"
+
+website:
+  title: "My Blog"
+  description: "A Quarto blog built with Blogkit."
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: tags.qmd
+        text: Tags
+    right:
+      - about.qmd
+
+format:
+  blogkit-html: default
+
+# Optional Blogkit settings (see README)
+blogkit:
+  per-page: 10      # pagination on tag and author pages
+  related: 5        # related posts under each post

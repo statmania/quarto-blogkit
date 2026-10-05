@@ -1,0 +1,47 @@
+---
+title: "Publishing with One Command: render, commit, push"
+description: "A small shell script turns the publish routine into one line: it renders chosen posts, commits only the project, rebases and pushes to GitHub Pages."
+date: "2026-09-12"
+categories: [Blogkit, Workflow]
+tags: [blogkit, shell, github-pages, automation, publishing, workflow]
+author: "Avery Kestrel"
+---
+
+Publishing by hand means the same four steps every time: render, check, commit, push. `publish.sh` does them in one line.
+
+### Daily Use
+
+```bash
+./publish.sh posts/my-new-post.qmd                  # one post
+./publish.sh posts/a.qmd posts/b.qmd                # several posts
+./publish.sh --all                                  # whole site
+./publish.sh -m "Add the tags post" posts/tags.qmd  # custom commit message
+./publish.sh --no-push posts/draft.qmd              # render and commit, look first
+```
+
+With no arguments it skips rendering and just refreshes the data file, then commits and pushes whatever is pending.
+
+### What the Script Does
+
+1. Finds the Quarto project (the folder with `_quarto.yml`).
+2. Renders each file you name. `quarto render` takes **one** file per call, so the script loops.
+3. Stages the project folder only, so unrelated changes elsewhere in the repository are left alone.
+4. Stops if a render fails, and skips the commit when nothing changed.
+5. Runs `git pull --rebase --autostash` and then `git push`.
+
+### Why One Post Is Enough
+
+Blogkit rebuilds its data file on every render, even of a single post. The archive, tags and related posts on all other pages read from that file in the browser, so you never have to re-render the whole site after adding one post. A full `--all` render is only needed after you change the theme, the stylesheet's structure or `_quarto.yml`.
+
+### Setting Up GitHub Pages
+
+The sample project builds into `docs/`. In your repository go to **Settings, Pages**, choose the main branch and the `/docs` folder. Because the built HTML is committed, GitHub needs no build step and Quarto does not have to be installed there.
+
+### Preview Before You Push
+
+```bash
+cd docs
+python3 -m http.server 8000     # then open http://localhost:8000
+```
+
+Use a hard refresh so the browser does not show stale files. If you like changing things first and publishing later, see [Customising the Theme](customising-the-theme.qmd).

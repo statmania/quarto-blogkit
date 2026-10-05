@@ -1,0 +1,80 @@
+---
+title: "Customising the Theme: CSS Variables and the Dark/Light Toggle"
+description: "How the dark and light schemes work in Blogkit, which CSS variables to change to retheme the whole site, and how to add your own styles without breaking either mode."
+date: "2026-08-30"
+categories: [Blogkit, Design]
+tags: [blogkit, theme, css, dark-mode, design, quarto]
+author: "Jordan Alder"
+---
+
+Blogkit ships a dark, high-contrast look with a light alternative. Quarto adds the toggle to the navbar and remembers the reader's choice; the extension supplies the styles.
+
+### How Quarto Switches Themes
+
+The extension sets two themes:
+
+```yaml
+theme:
+  dark: [cosmo, theme-dark.scss]
+  light: cosmo
+```
+
+Two details are easy to miss. First, the **first** one listed is the default, so dark loads first. Second, Quarto decides whether a scheme is dark from its **background colour**, not its name. The tiny `theme-dark.scss` only sets a near-black `$body-bg`, which is what makes Quarto treat it as dark. If both entries were plain `cosmo`, both would count as light and the toggle would appear to do nothing.
+
+### The Colour Variables
+
+Almost every colour in the stylesheet comes from a few variables at the top of `styles.css`:
+
+```css
+:root{
+  --bk-bg:     #05070d;   /* page background */
+  --bk-bg2:    #0a0f1e;   /* panels and cards */
+  --bk-cyan:   #00e5ff;   /* main accent */
+  --bk-purple: #a855f7;
+  --bk-pink:   #ff2fb4;
+  --bk-text:   #e8ecf7;
+  --bk-muted:  #9aa4c2;
+}
+```
+
+In light mode the same names get lighter values (under `:root:has(body.quarto-light)`), so one variable name works in both schemes. To retheme, change the accent colours in both places.
+
+### Add Your Own Styles
+
+Put extra CSS in your project (for example `custom.css`) and list it after the format:
+
+```yaml
+format:
+  blogkit-html:
+    css: custom.css
+```
+
+Use the variables instead of fixed colours:
+
+```css
+.my-banner{
+  background: var(--bk-bg2);
+  border: 1px solid var(--bk-line);
+  color: var(--bk-text);
+}
+```
+
+A component written this way looks right in dark and light with no extra rules. When you do need a light-only tweak, scope it with `body.quarto-light .my-banner { ... }`.
+
+### Dark Bands on a Light Page
+
+In light mode the navbar and the post title banner stay dark, which gives the page a strong frame. They do this by re-declaring the dark palette on those elements, a trick you can reuse for any section you want to keep dark.
+
+### Language and Labels
+
+Interface text ("Archive", "Tags", "Related posts") can be translated or reworded in `_quarto.yml`:
+
+```yaml
+blogkit:
+  labels:
+    archive: Archiv
+    tags: Schlagworte
+    related: Weitere Beiträge
+```
+
+After a theme change, run `./publish.sh --all` once so every page gets the new stylesheet; see [Publishing with One Command](publish-with-one-command.qmd).

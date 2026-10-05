@@ -1,0 +1,47 @@
+---
+title: "Writing Posts with Tags, Categories and Related Posts"
+description: "How front matter drives everything in Blogkit: the difference between categories and tags, how related posts are scored, and how to keep your tags tidy."
+date: "2026-10-02"
+categories: [Blogkit, Writing]
+tags: [blogkit, front-matter, tags, related-posts, quarto, yaml]
+author: "Avery Kestrel"
+---
+
+Everything Blogkit shows comes from the front matter at the top of each post. Four fields matter most.
+
+```yaml
+---
+title: "Required"
+date: "2026-10-02"                # required, YYYY-MM-DD
+categories: [Blogkit, Writing]    # broad: shown on cards, used for filtering
+tags: [front-matter, tags]        # specific: drives the tag cloud and related posts
+author: "Avery Kestrel"           # matches a name in authors.yml
+---
+```
+
+A post without `title` or `date` is skipped (a warning is printed while rendering), and `draft: true` keeps a post out of the archive and tags.
+
+### Categories Versus Tags
+
+| | Categories | Tags |
+| :--- | :--- | :--- |
+| Scope | Broad: language, subject, type | Specific: the concept in this post |
+| Example | `Tutorial`, `R` | `front-matter`, `pagination` |
+| Where you see them | Cards and the homepage category cloud | Sidebar tag cloud, tags page, post footer |
+| How many | 1 to 3 | 3 to 6 |
+
+Keep tags lowercase and hyphenated (`related-posts`, not `Related Posts`). Blogkit lowercases them anyway, but consistent names mean one tag instead of three near-duplicates.
+
+### How Related Posts Are Chosen
+
+Under every post you see up to five related ones. Blogkit scores each other post by the tags and categories it shares with the current one. A shared feature counts for more when **few** posts have it, so a rare tag such as `related-posts` says more than a common one such as `quarto`. Categories count half as much as tags. Posts with no overlap are never shown, so a post with unusual tags may have fewer than five.
+
+In practice: reuse a tag when two posts really are about the same thing, and add one specific tag to every post. Related posts improve as your tagging does.
+
+### Where Tags Appear
+
+- The **sidebar** tag cloud, sized by how many posts use each tag.
+- The **tags page**: click a tag to see its posts, ten per page by default (`per-page:` in `_quarto.yml`).
+- A **Tags** row under each post body.
+
+See how this connects to [authors](authors-and-profiles.qmd) and to [publishing](publish-with-one-command.qmd).

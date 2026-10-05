@@ -1,0 +1,66 @@
+---
+title: "Exercise Posts: Hint and Reveal Buttons for Code"
+description: "Hide the answer to an exercise behind a Reveal button, with a bulleted hint above it, using one small div and no extra dependencies."
+date: "2026-09-20"
+categories: [Blogkit, Teaching]
+tags: [blogkit, exercises, hints, teaching, code-blocks, design]
+author: "Jordan Alder"
+---
+
+When a post teaches by exercise, showing the solution straight away spoils it. Blogkit hides the code by default and adds two buttons above it: **See hint** and **Reveal code**. Readers can try first, peek at the steps, then compare.
+
+### The Markup
+
+Wrap the hint and the code in a `reveal-code` div:
+
+````markdown
+::: {.reveal-code}
+::: {.hint}
+- Start `i` at 2.
+- Repeat while `i <= 10`.
+- Print `i`, then add 2.
+:::
+
+```python
+i = 2
+while i <= 10:
+    print(i, end=" ")
+    i += 2
+```
+:::
+````
+
+### Live Example
+
+**Exercise:** print the even numbers from 2 to 10 with a `while` loop.
+
+Expected output:
+
+```
+2 4 6 8 10
+```
+
+::: {.reveal-code}
+::: {.hint}
+- Start a counter `i` at 2.
+- Repeat while `i <= 10`.
+- Print `i`, then add 2 to move to the next even number.
+:::
+
+```python
+i = 2
+while i <= 10:
+    print(i, end=" ")
+    i += 2
+print()
+```
+:::
+
+### Good Habits for Exercise Posts
+
+- Show the **expected output** in the open, so readers know what they are aiming for.
+- Write hints as short **steps**, not as the answer in disguise.
+- Add a "Try next" line with a harder variation.
+- Run the solution yourself and paste the real output.
+
+Without JavaScript the hint and the code simply stay visible, so nothing is lost for readers who block scripts. Styling for the buttons lives in the extension stylesheet; see [Customising the Theme](customising-the-theme.qmd) to change it.

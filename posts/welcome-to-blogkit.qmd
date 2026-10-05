@@ -1,0 +1,48 @@
+---
+title: "Welcome to Blogkit: What You Get Out of the Box"
+description: "A quick tour of Blogkit, a Quarto extension that turns a plain Quarto blog into a themed site with an archive, tag cloud, related posts, author pages and a publish script."
+date: "2026-10-01"
+categories: [Blogkit, Getting started]
+tags: [blogkit, quarto, getting-started, features, workflow]
+author: "Avery Kestrel"
+---
+
+Quarto already makes a good blog: write Markdown, get a listing page, RSS and search. **Blogkit** adds the parts that usually need a CMS, without a server or a database. This sample site is built with it, so everything below is something you can click on.
+
+### What Is Included
+
+- **Dark and light theme** with a toggle in the navbar. Dark is the default and the choice is remembered.
+- **Archive and tag cloud** in the sidebar of every post and on the homepage.
+- **Tags page** (`tags.html#tag=quarto`) listing the posts for a tag, with pagination.
+- **Related posts** under each post, picked from shared tags and categories.
+- **Author pages and cards**: bios and photos kept in one `authors.yml`.
+- **Hint and reveal buttons** for exercise posts (see [Exercises with Hints](exercises-with-hints.qmd)).
+- **A publish script** that renders, commits and pushes in one command.
+
+### How It Works in One Paragraph
+
+Before every render, a small Python script reads the front matter of all your posts and writes one data file. A browser script loads that file on each page and builds the archive, tag cloud, related posts and author pages. Because the data is rebuilt on any render, adding a post means rendering **only that post**: older pages pick up the change the next time they are opened.
+
+### Your First Post
+
+Create `posts/my-first-post.qmd`:
+
+```yaml
+---
+title: "My First Post"
+description: "One sentence for the card and search results."
+date: "2026-10-05"
+categories: [Notes]
+tags: [hello, quarto]
+author: "Avery Kestrel"
+---
+
+Hello! This post shows up in the archive, under the tags "hello" and "quarto",
+and in the author page for Avery Kestrel.
+```
+
+Render it with `quarto render posts/my-first-post.qmd`, or publish with `./publish.sh posts/my-first-post.qmd`. The next posts explain [tags and related posts](writing-posts-with-tags.qmd), [authors](authors-and-profiles.qmd), [publishing](publish-with-one-command.qmd) and [theming](customising-the-theme.qmd).
+
+::: {.callout-tip}
+Every page of this sample site works offline too: open `docs/index.html` straight from disk and the widgets still load.
+:::

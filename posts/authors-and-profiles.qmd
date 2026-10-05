@@ -1,0 +1,44 @@
+---
+title: "Authors and Profiles: One YAML File for Bios and Photos"
+description: "How Blogkit stores author profiles in authors.yml, creates an author page for each person, links bylines, and adds category and tag filters with pagination."
+date: "2026-09-27"
+categories: [Blogkit, Authors]
+tags: [blogkit, authors, profiles, pagination, yaml, teaching]
+author: "Jordan Alder"
+---
+
+A multi-author blog needs more than a name in the byline. Blogkit keeps profiles in one file and builds everything else from it.
+
+### The Profile File
+
+```yaml
+jordan-alder:                       # the slug: authors/jordan-alder.html
+  name: Jordan Alder
+  aliases: []                       # other spellings used in posts
+  image: img/jordan-alder.svg       # square-ish photo, shown as a circle
+  tagline: Teaches with code, themes and exercises
+  bio: >-
+    Jordan builds learning material: exercises with hints, readable themes
+    and small examples that run.
+  links:
+    - {text: Website, href: "https://example.org/jordan"}
+```
+
+Posts keep a plain `author: "Jordan Alder"` in their front matter. A post belongs to the profile whose `name` or `aliases` match, so you can add profiles later without touching old posts.
+
+### What You Get
+
+- An **author page** (`authors/jordan-alder.html`) with the photo, bio, links and all of the author's posts.
+- **Clickable bylines** on post pages and on the homepage cards.
+- An **author card** at the end of every post with a link to "All N posts by ...".
+- **Filters and pagination** on the author page: pick a category or a tag to narrow the list, then page through ten posts at a time. The state is kept in the address (`#cat=Blogkit&page=2`), so a filtered view can be shared.
+
+### Adding an Author
+
+1. Add an entry to `authors.yml` and put the photo in `img/`.
+2. Run `quarto render`. Blogkit writes `authors/<slug>.qmd` for you (never edit that file by hand) and the page is built.
+3. Use the exact `name` in the posts' `author:` field.
+
+An author who is not in `authors.yml` simply has no link, so guest posts still work.
+
+This sample site has two authors, so you can see both pages and the filters in action. For how the data file reaches the browser, read [Welcome to Blogkit](welcome-to-blogkit.qmd).

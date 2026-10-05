@@ -1,0 +1,7 @@
+---
+title: "About"
+---
+
+This is a sample blog built with Blogkit, a Quarto extension that adds a dark/light theme, a sidebar archive and tag cloud, related posts, author pages, hint-and-reveal code blocks, and a one-command publish script.
+
+Replace this text with your own story, and edit `authors.yml` to change the authors shown on posts.

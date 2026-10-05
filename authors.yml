@@ -1,0 +1,22 @@
+# One entry per author. The key is the URL slug (authors/<slug>.html).
+# A post belongs to an author when its `author:` equals `name` (or an alias).
+avery-kestrel:
+  name: Avery Kestrel
+  aliases: []
+  image: img/avery-kestrel.svg
+  tagline: Writes about workflows and automation
+  bio: >-
+    Avery likes small tools that remove repetitive work. Most of the posts here
+    on setup, publishing and writing habits started as notes to self.
+  links:
+    - {text: Website, href: "https://example.org/avery"}
+jordan-alder:
+  name: Jordan Alder
+  aliases: []
+  image: img/jordan-alder.svg
+  tagline: Teaches with code, themes and exercises
+  bio: >-
+    Jordan builds learning material: exercises with hints, readable themes and
+    small examples that run. Posts here cover the teaching and design side.
+  links:
+    - {text: Website, href: "https://example.org/jordan"}
