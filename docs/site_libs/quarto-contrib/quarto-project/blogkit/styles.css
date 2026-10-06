@@ -674,3 +674,6 @@ body.quarto-light main.content .bk-hero p.bk-subtitle{ color: var(--bk-muted); }
 body.quarto-light .quarto-title-meta-heading{ color: #56628a; }
 body.quarto-light .quarto-title-meta-contents,
 body.quarto-light .quarto-title-meta-contents p{ color: #25304f; }
+
+/* navbar logo */
+#quarto-header .navbar-logo{ height: 48px; width: auto; max-height: none; }

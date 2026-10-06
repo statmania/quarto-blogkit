@@ -282,6 +282,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../img/logo.svg" alt="" class="navbar-logo light-content">
+    <img src="../img/logo.svg" alt="" class="navbar-logo dark-content">
+    </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">My Blog</span>
     </a>
@@ -362,6 +366,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#how-quarto-switches-themes" id="toc-how-quarto-switches-themes" class="nav-link active" data-scroll-target="#how-quarto-switches-themes">How Quarto Switches Themes</a></li>
   <li><a href="#the-colour-variables" id="toc-the-colour-variables" class="nav-link" data-scroll-target="#the-colour-variables">The Colour Variables</a></li>
+  <li><a href="#replace-the-sample-logo" id="toc-replace-the-sample-logo" class="nav-link" data-scroll-target="#replace-the-sample-logo">Replace the Sample Logo</a></li>
   <li><a href="#add-your-own-styles" id="toc-add-your-own-styles" class="nav-link" data-scroll-target="#add-your-own-styles">Add Your Own Styles</a></li>
   <li><a href="#dark-bands-on-a-light-page" id="toc-dark-bands-on-a-light-page" class="nav-link" data-scroll-target="#dark-bands-on-a-light-page">Dark Bands on a Light Page</a></li>
   <li><a href="#language-and-labels" id="toc-language-and-labels" class="nav-link" data-scroll-target="#language-and-labels">Language and Labels</a></li>
@@ -399,18 +404,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>In light mode the same names get lighter values (under <code>:root:has(body.quarto-light)</code>), so one variable name works in both schemes. To retheme, change the accent colours in both places.</p>
 </section>
+<section id="replace-the-sample-logo" class="level3">
+<h3 class="anchored" data-anchor-id="replace-the-sample-logo">Replace the Sample Logo</h3>
+<p>The navbar shows a <strong>sample logo</strong>, <code>img/logo.svg</code>. Replace it with your own by overwriting that file, or point the <code>logo:</code> setting in <code>_quarto.yml</code> at another image:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">navbar</span><span class="kw">:</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">logo</span><span class="kw">:</span><span class="at"> img/logo.svg</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
 <section id="add-your-own-styles" class="level3">
 <h3 class="anchored" data-anchor-id="add-your-own-styles">Add Your Own Styles</h3>
 <p>Put extra CSS in your project (for example <code>custom.css</code>) and list it after the format:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">blogkit-html</span><span class="kw">:</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">css</span><span class="kw">:</span><span class="at"> custom.css</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">blogkit-html</span><span class="kw">:</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">css</span><span class="kw">:</span><span class="at"> custom.css</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Use the variables instead of fixed colours:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.my-banner</span>{</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--bk-bg2</span><span class="fu">)</span><span class="op">;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border</span><span class="ch">:</span> <span class="dv">1</span><span class="dt">px</span> <span class="dv">solid</span> <span class="fu">var(</span><span class="va">--bk-line</span><span class="fu">)</span><span class="op">;</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--bk-text</span><span class="fu">)</span><span class="op">;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.my-banner</span>{</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--bk-bg2</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border</span><span class="ch">:</span> <span class="dv">1</span><span class="dt">px</span> <span class="dv">solid</span> <span class="fu">var(</span><span class="va">--bk-line</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span><span class="ch">:</span> <span class="fu">var(</span><span class="va">--bk-text</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A component written this way looks right in dark and light with no extra rules. When you do need a light-only tweak, scope it with <code>body.quarto-light .my-banner { ... }</code>.</p>
 </section>
 <section id="dark-bands-on-a-light-page" class="level3">
@@ -420,11 +432,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="language-and-labels" class="level3">
 <h3 class="anchored" data-anchor-id="language-and-labels">Language and Labels</h3>
 <p>Interface text (“Archive”, “Tags”, “Related posts”) can be translated or reworded in <code>_quarto.yml</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">blogkit</span><span class="kw">:</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">labels</span><span class="kw">:</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">archive</span><span class="kw">:</span><span class="at"> Archiv</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">tags</span><span class="kw">:</span><span class="at"> Schlagworte</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">related</span><span class="kw">:</span><span class="at"> Weitere Beiträge</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">blogkit</span><span class="kw">:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">labels</span><span class="kw">:</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">archive</span><span class="kw">:</span><span class="at"> Archiv</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">tags</span><span class="kw">:</span><span class="at"> Schlagworte</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">related</span><span class="kw">:</span><span class="at"> Weitere Beiträge</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>After a theme change, run <code>./publish.sh --all</code> once so every page gets the new stylesheet; see <a href="../posts/publish-with-one-command.html">Publishing with One Command</a>.</p>
 
 

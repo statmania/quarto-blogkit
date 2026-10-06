@@ -13,6 +13,7 @@ website:
   title: "My Blog"
   description: "A Quarto blog built with Blogkit."
   navbar:
+    logo: img/logo.svg   # sample logo: replace this file with your own
     left:
       - href: index.qmd
         text: Home

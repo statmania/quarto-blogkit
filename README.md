@@ -131,6 +131,30 @@ avery-kestrel:
 
 Posts only need `author: "Name"`. Authors not listed in the file are shown without a link.
 
+## Comments
+
+Blogkit does not include comments, because a static site has no server to store them. Quarto has built-in support for third-party comment services. [Giscus](https://giscus.app) is the best fit: it is free, has no ads, and stores comments in your repository's GitHub Discussions.
+
+**1. Prepare the repository**
+
+1. Make the repository public.
+2. In **Settings → General → Features**, turn on **Discussions**.
+3. Install the [giscus app](https://github.com/apps/giscus) on the repository.
+4. Go to <https://giscus.app>, enter your `owner/repo`, and pick a Discussion category (Announcements is a good choice).
+
+**2. Turn it on in `_quarto.yml`**
+
+```yaml
+website:
+  comments:
+    giscus:
+      repo: your-user/your-repo
+```
+
+Quarto adds the comment box under every page and switches its theme with the dark/light toggle. To limit comments to posts, put the same `comments:` block in `posts/_metadata.yml` instead. To hide them on one page, set `comments: false` in that page's front matter.
+
+**Other options:** Quarto also supports `utterances` (GitHub Issues) and `hypothesis` (annotations on the page). See the [Quarto comments guide](https://quarto.org/docs/websites/website-tools.html#comments) for every setting.
+
 ## Publish
 
 ```bash
@@ -161,6 +185,16 @@ blogkit:
 ```
 
 Label keys: `onThisPage`, `archive`, `tags`, `related`, `allCategories`, `allTags`, `category`, `tag`, `pickTag`, `post`, `posts`, `prev`, `next`, `allBy` (uses `{n}` and `{name}`), `of` (uses `{a}` and `{b}`).
+
+## Logo
+
+The starter site ships a **sample logo** (`img/logo.svg`) and shows it in the navbar through `logo:` in `_quarto.yml`. **Replace it with your own**: overwrite `img/logo.svg` (or point `logo:` at a PNG or SVG of your choice). Remove the `logo:` line to show no logo.
+
+```yaml
+website:
+  navbar:
+    logo: img/logo.svg
+```
 
 ## Theming
 
@@ -202,6 +236,7 @@ _extensions/blogkit/    the extension (copy this folder to use it anywhere)
   blogkit.js            browser script
   build_site_data.py    pre-render hook
   publish.sh
+img/logo.svg            sample navbar logo (replace with yours)
 posts/, authors.yml, index.qmd, ...   the sample site and starter template
 docs/                   the built sample site
 ```

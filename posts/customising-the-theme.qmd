@@ -39,6 +39,16 @@ Almost every colour in the stylesheet comes from a few variables at the top of `
 
 In light mode the same names get lighter values (under `:root:has(body.quarto-light)`), so one variable name works in both schemes. To retheme, change the accent colours in both places.
 
+### Replace the Sample Logo
+
+The navbar shows a **sample logo**, `img/logo.svg`. Replace it with your own by overwriting that file, or point the `logo:` setting in `_quarto.yml` at another image:
+
+```yaml
+website:
+  navbar:
+    logo: img/logo.svg
+```
+
 ### Add Your Own Styles
 
 Put extra CSS in your project (for example `custom.css`) and list it after the format:
