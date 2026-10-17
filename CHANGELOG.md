@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- `publish.sh` re-renders `index.qmd` after single-post renders: Quarto's listing refresh renders the homepage without the extension's format (light theme only, no CSS or scripts). If you render posts by hand, run `quarto render index.qmd` afterwards, or do a full `quarto render`.
 - Small-screen "On this page" menu works when Quarto rewrites TOC links to absolute URLs.
 - Tag cloud in the sidebar is taller (18rem) before it scrolls.
 - Inline code and plain (language-less) output blocks are styled separately, in both themes.
