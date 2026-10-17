@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Small-screen "On this page" menu works when Quarto rewrites TOC links to absolute URLs.
+- Tag cloud in the sidebar is taller (18rem) before it scrolls.
+- Inline code and plain (language-less) output blocks are styled separately, in both themes.
+
 ## 0.1.0
 
 First release, extracted from a working Quarto blog.

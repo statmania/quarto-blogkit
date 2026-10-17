@@ -137,9 +137,14 @@ main.content pre, main.content div.sourceCode{
   border-radius: 0.5rem;
 }
 
-main.content code:not(.sourceCode > *){
+main.content :not(pre) > code:not(.sourceCode > *){
   color: #ffab70;
   background-color: rgba(255,255,255,0.06);
+}
+/* Plain output blocks (``` with no language): readable light text on the dark panel. */
+main.content pre > code:not(.sourceCode){
+  color: #d7def2;
+  background: none;
 }
 
 main.content table{ color: #c7cee6; }
@@ -358,7 +363,7 @@ div.callout code{
 
 #bk-widgets{ margin-top: 1.5rem; }
 /* Long tag list: fixed-height scroller */
-.bk-tag-cloud{ max-height: 11rem; overflow-y: auto; padding-right: .4rem; }
+.bk-tag-cloud{ max-height: 18rem; overflow-y: auto; padding-right: .4rem; }
 .bk-tag-cloud-all{ max-height: none; overflow: visible; }
 /* futuristic scrollbar (WebKit/Blink); Firefox gets scrollbar-color */
 .bk-tag-cloud::-webkit-scrollbar{ width: 6px; }
@@ -592,7 +597,8 @@ body.quarto-light main.content a:hover{ color: #00506a; }
 body.quarto-light main.content img{ box-shadow: 0 10px 28px rgba(20,40,90,0.18); }
 body.quarto-light main.content pre,
 body.quarto-light main.content div.sourceCode{ border-color: rgba(20,40,90,0.14); }
-body.quarto-light main.content code:not(.sourceCode > *){ color: #b04a0b; background-color: rgba(20,40,90,0.07); }
+body.quarto-light main.content :not(pre) > code:not(.sourceCode > *){  color: #b04a0b; background-color: rgba(20,40,90,0.07); }
+body.quarto-light main.content pre > code:not(.sourceCode){ color: #25304f; background: none; }
 body.quarto-light main.content .table > :not(caption) > * > *{ border-bottom-color: rgba(20,40,90,0.16); }
 body.quarto-light main.content thead{ color: #0f1a36; }
 body.quarto-light main.content hr{ border-color: rgba(20,40,90,0.16); }
