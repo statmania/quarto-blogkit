@@ -5,6 +5,7 @@ date: "2026-10-02"
 categories: [Blogkit, Writing]
 tags: [blogkit, front-matter, tags, related-posts, quarto, yaml]
 author: "Avery Kestrel"
+image: ../img/writing-posts-with-tags.svg
 ---
 
 Everything Blogkit shows comes from the front matter at the top of each post. Four fields matter most.

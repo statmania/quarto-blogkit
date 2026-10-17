@@ -5,6 +5,7 @@ date: "2026-09-12"
 categories: [Blogkit, Workflow]
 tags: [blogkit, shell, github-pages, automation, publishing, workflow]
 author: "Avery Kestrel"
+image: ../img/publish-with-one-command.svg
 ---
 
 Publishing by hand means the same four steps every time: render, check, commit, push. `publish.sh` does them in one line.

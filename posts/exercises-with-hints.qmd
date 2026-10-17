@@ -5,6 +5,7 @@ date: "2026-09-20"
 categories: [Blogkit, Teaching]
 tags: [blogkit, exercises, hints, teaching, code-blocks, design]
 author: "Jordan Alder"
+image: ../img/exercises-with-hints.svg
 ---
 
 When a post teaches by exercise, showing the solution straight away spoils it. Blogkit hides the code by default and adds two buttons above it: **See hint** and **Reveal code**. Readers can try first, peek at the steps, then compare.

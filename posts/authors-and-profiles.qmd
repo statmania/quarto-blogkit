@@ -5,6 +5,7 @@ date: "2026-09-27"
 categories: [Blogkit, Authors]
 tags: [blogkit, authors, profiles, pagination, yaml, teaching]
 author: "Jordan Alder"
+image: ../img/authors-and-profiles.svg
 ---
 
 A multi-author blog needs more than a name in the byline. Blogkit keeps profiles in one file and builds everything else from it.

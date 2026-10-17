@@ -5,6 +5,7 @@ date: "2026-08-30"
 categories: [Blogkit, Design]
 tags: [blogkit, theme, css, dark-mode, design, quarto]
 author: "Jordan Alder"
+image: ../img/customising-the-theme.svg
 ---
 
 Blogkit ships a dark, high-contrast look with a light alternative. Quarto adds the toggle to the navbar and remembers the reader's choice; the extension supplies the styles.

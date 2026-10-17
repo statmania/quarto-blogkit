@@ -14,9 +14,9 @@
   var small = window.matchMedia('(max-width: 991.98px)');
   var CFG = {};
   var LABELS = {
-    onThisPage: 'On this page', archive: 'Archive', tags: 'Tags', related: 'Related posts',
+    onThisPage: 'On this page', archive: 'Archive', tags: 'Tags', categories: 'Categories', related: 'Related posts',
     allCategories: 'All categories', allTags: 'All tags', category: 'Category', tag: 'Tag',
-    pickTag: 'Pick a tag to see its posts.', post: 'post', posts: 'posts',
+    pickTag: 'Pick a tag to see its posts.', pickCategory: 'Pick a category to see its posts.', post: 'post', posts: 'posts',
     prev: '\u2039 Prev', next: 'Next \u203a', allBy: 'All {n} posts by {name}', of: '{a} of {b} posts'
   };
   function t(key, vars) {
@@ -38,6 +38,8 @@
     return a;
   }
   function tagHref(t) { return base + 'tags.html#tag=' + encodeURIComponent(t); }
+  function catHref(c) { return base + 'categories.html#category=' + encodeURIComponent(c); }
+  function assetHref(u) { return /^(https?:)?\/\//.test(u) ? u : base + u; }
   function ready(fn) {
     if (document.readyState === 'complete') fn();
     else window.addEventListener('load', fn);
@@ -55,14 +57,22 @@
   function mobileToc() {
     var toc = document.querySelector('#quarto-margin-sidebar #TOC');
     var main = document.getElementById('quarto-document-content');
-    if (!toc || !main || !toc.querySelector('a[href^="#"]')) return;
+    // Quarto rewrites the TOC hrefs to absolute URLs on load, so read the hash from
+    // data-scroll-target (or the href) instead of requiring href="#..."
+    function hashOf(a) {
+      var h = a.getAttribute('data-scroll-target') || a.getAttribute('href') || '';
+      var i = h.indexOf('#');
+      return i < 0 ? '' : h.slice(i);
+    }
+    var srcs = [].filter.call(toc ? toc.querySelectorAll('a') : [], function (a) { return hashOf(a).length > 1; });
+    if (!toc || !main || !srcs.length) return;
     var box = el('details', 'bk-toc-mobile');
     var sum = el('summary', null, t('onThisPage'));
     var nav = el('nav');
     nav.setAttribute('aria-label', t('onThisPage'));
     var links = [];
-    toc.querySelectorAll('a[href^="#"]').forEach(function (src) {
-      var a = link(src.getAttribute('href'), src.textContent);
+    srcs.forEach(function (src) {
+      var a = link(hashOf(src), src.textContent);
       a.addEventListener('click', function () { box.open = false; });
       nav.appendChild(a);
       links.push(a);
@@ -145,13 +155,13 @@
     });
     return nav;
   }
-  function chips(counts, active) {
+  function chips(counts, active, hrefFn) {
     var keys = byCount(counts);
     var lo = counts[keys[keys.length - 1]], hi = counts[keys[0]];
     var frag = document.createDocumentFragment();
     keys.forEach(function (t) {
       var size = 0.78 + (hi > lo ? 0.5 * (counts[t] - lo) / (hi - lo) : 0);
-      var a = link(tagHref(t), t + ' ', 'bk-tag');
+      var a = link((hrefFn || tagHref)(t), t + ' ', 'bk-tag');
       a.dataset.tag = t;
       a.style.fontSize = size.toFixed(2) + 'rem';
       a.appendChild(el('span', 'bk-count', counts[t]));
@@ -209,6 +219,22 @@
     scored.sort(function (a, b) { return b[0] - a[0] || (a[1].date < b[1].date ? 1 : -1); });
     return scored.slice(0, k).map(function (x) { return x[1]; });
   }
+  function relatedItem(p) {
+    var li = el('li', 'bk-rel-item');
+    var a = link(postHref(p), '', 'bk-rel-link');
+    var img = el('img', 'bk-rel-thumb');
+    img.src = assetHref(p.image || 'img/placeholder.svg');   // the starter site ships img/placeholder.svg
+    img.alt = '';
+    img.loading = 'lazy';
+    img.onerror = function () { img.remove(); };
+    a.appendChild(img);
+    var body = el('span', 'bk-rel-body');
+    body.appendChild(el('span', 'bk-rel-title', p.title));
+    body.appendChild(el('span', 'bk-tp-date', p.date));
+    a.appendChild(body);
+    li.appendChild(a);
+    return li;
+  }
   function authorCard(a) {
     var card = el('aside', 'bk-author-card');
     if (a.image) {
@@ -260,8 +286,8 @@
     if (rel.length) {
       var box = el('section', 'bk-related');
       box.appendChild(el('h2', null, t('related')));
-      var ul = el('ul', 'bk-post-list');
-      rel.forEach(function (p) { ul.appendChild(postItem(p)); });
+      var ul = el('ul', 'bk-rel-list');
+      rel.forEach(function (p) { ul.appendChild(relatedItem(p)); });
       box.appendChild(ul);
       main.appendChild(box);
     }
@@ -294,25 +320,30 @@
   }
   function hashParams() { return new URLSearchParams(location.hash.slice(1)); }
 
-  // ---------- tags page ----------
-  function tagsPage(D) {
-    var root = document.getElementById('bk-tags-page');
+  // ---------- tags page and categories page (same widget, different facet) ----------
+  function catCounts(posts) {
+    var all = [];
+    posts.forEach(function (p) { new Set(p.cats).forEach(function (c) { all.push(c); }); });
+    return counter(all);
+  }
+  function facetPage(D, o) {
+    var root = document.getElementById(o.root);
     if (!root) return;
-    var side = document.getElementById('bk-tags-side');
-    var counts = tagCounts(D.posts), per = CFG.perPage || 10;
-    var hint = el('p', 'bk-tags-hint', t('pickTag'));
+    var side = document.getElementById(o.side);
+    var counts = o.counts(D.posts), per = CFG.perPage || 10;
+    var hint = el('p', 'bk-tags-hint', t(o.hint));
     var sec = el('section', 'bk-tag-section');
     var nav = el('nav', 'bk-pager');
     nav.setAttribute('aria-label', 'Pagination');
     root.append(hint, sec, nav);
     function render() {
-      var h = hashParams(), tag = h.get('tag') || '';
-      var list = tag ? D.posts.filter(function (p) { return p.tags.indexOf(tag) > -1; }) : [];
+      var h = hashParams(), val = h.get(o.param) || '';
+      var list = val ? D.posts.filter(function (p) { return p[o.field].indexOf(val) > -1; }) : [];
       if (side) {
         side.textContent = '';
-        side.appendChild(el('h3', 'bk-widget-title', t('tags')));
+        side.appendChild(el('h3', 'bk-widget-title', t(o.title)));
         var box = el('div', 'bk-tag-cloud');
-        box.appendChild(chips(counts, tag));
+        box.appendChild(chips(counts, val, o.href));
         side.appendChild(box);
       }
       hint.hidden = list.length > 0;
@@ -322,20 +353,27 @@
       if (!list.length) return;
       var pages = Math.ceil(list.length / per);
       var page = Math.min(Math.max(+h.get('page') || 1, 1), pages);
-      var title = el('h2', null, tag + ' ');
+      var title = el('h2', null, val + ' ');
       title.appendChild(el('span', 'bk-count', list.length + ' ' + (list.length === 1 ? t('post') : t('posts'))));
       var ul = el('ul', 'bk-post-list');
       list.slice((page - 1) * per, page * per).forEach(function (p) { ul.appendChild(postItem(p)); });
       sec.append(title, ul);
       pager(nav, pages, page, function (n) {
-        location.hash = 'tag=' + encodeURIComponent(tag) + (n > 1 ? '&page=' + n : '');
+        location.hash = o.param + '=' + encodeURIComponent(val) + (n > 1 ? '&page=' + n : '');
       });
     }
     window.addEventListener('hashchange', render);
     render();
   }
+  function tagsPage(D) {
+    facetPage(D, {root: 'bk-tags-page', side: 'bk-tags-side', param: 'tag', field: 'tags',
+                  title: 'tags', hint: 'pickTag', counts: tagCounts, href: tagHref});
+  }
+  function categoriesPage(D) {
+    facetPage(D, {root: 'bk-cats-page', side: 'bk-cats-side', param: 'category', field: 'cats',
+                  title: 'categories', hint: 'pickCategory', counts: catCounts, href: catHref});
+  }
 
-  // ---------- author page ----------
   function authorPage(D) {
     var root = document.getElementById('bk-author-root');
     if (!root) return;
@@ -404,6 +442,7 @@
   function start(raw) {
     var D = prepare(raw);
     tagsPage(D);
+    categoriesPage(D);
     authorPage(D);
     homepageBylines(D);
     ready(function () {

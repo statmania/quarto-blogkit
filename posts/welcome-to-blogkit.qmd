@@ -5,6 +5,7 @@ date: "2026-10-01"
 categories: [Blogkit, Getting started]
 tags: [blogkit, quarto, getting-started, features, workflow]
 author: "Avery Kestrel"
+image: ../img/welcome-to-blogkit.svg
 ---
 
 Quarto already makes a good blog: write Markdown, get a listing page, RSS and search. **Blogkit** adds the parts that usually need a CMS, without a server or a database. This sample site is built with it, so everything below is something you can click on.
