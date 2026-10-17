@@ -12,8 +12,8 @@ Repository: <https://github.com/statmania/quarto-blogkit>
 
 - Dark and light theme with a navbar toggle (dark by default, choice remembered)
 - Sidebar archive and tag cloud
-- Tags page with pagination, plus a tags row under each post
-- Related posts, ranked by shared tags and categories
+- Tags page and categories page with pagination, plus a tags row under each post
+- Related posts with thumbnails, ranked by shared tags and categories
 - Multiple authors: bios and photos in one `authors.yml`, an author page per person, author cards under posts
 - Hint and Reveal buttons for exercise posts
 - Small-screen "On this page" menu

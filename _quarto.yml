@@ -19,8 +19,23 @@ website:
         text: Home
       - href: tags.qmd
         text: Tags
+      - href: categories.qmd
+        text: Categories
     right:
       - about.qmd
+
+  page-footer:                  # shown on every page; styled by the extension
+    left: "© 2026 My Blog"
+    center:
+      - text: "Tags"
+        href: tags.qmd
+      - text: "Categories"
+        href: categories.qmd
+      - text: "About"
+        href: about.qmd
+    right:
+      - text: "RSS"
+        href: index.xml
 
 format:
   blogkit-html: default
