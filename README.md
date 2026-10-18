@@ -19,7 +19,7 @@ Repository: <https://github.com/statmania/quarto-blogkit>
 - Small-screen "On this page" menu
 - `publish.sh`: render, commit and push in one command
 
-When you add a post, render **only that post**, then `quarto render index.qmd` (a single-post render refreshes the homepage listing without the extension format, so the homepage loses its theme until it is rendered itself; `./publish.sh posts/x.qmd` does both). The archive, tags, related posts and author pages update on their own.
+When you add a post, render **only that post**. The archive, tags, related posts and author pages update on their own. (The `post-render` hook in `_quarto.yml` re-renders `index.qmd` afterwards: Quarto's own homepage-listing refresh drops the extension's format, so without the hook the homepage would lose its theme.)
 
 ## Requirements
 

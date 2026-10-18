@@ -7,7 +7,7 @@
 - Categories page (`categories.qmd`, created by the hook like `tags.qmd`): a category cloud and a paginated post list, linked as `categories.html#category=<name>`.
 - Related posts show each post's thumbnail (its front-matter `image`) beside the title and date (`img/placeholder.svg` when a post has none; the thumbnail is dropped if it cannot load). The hook now writes `image` into `blogkit-data.js`.
 - The sample site's navbar gets a Categories link and it has a `page-footer` example (the extension already styles `.nav-footer` in both themes).
-- `publish.sh` re-renders `index.qmd` after single-post renders: Quarto's listing refresh renders the homepage without the extension's format (light theme only, no CSS or scripts). If you render posts by hand, run `quarto render index.qmd` afterwards, or do a full `quarto render`.
+- `repair_index.py` post-render hook (add `post-render: _extensions/blogkit/repair_index.py` under `project:`): rendering a single post makes Quarto refresh the homepage listing without the extension's format (light theme only, no CSS or scripts); the hook re-renders `index.qmd` afterwards. Replaces the extra step previously added to `publish.sh`.
 - Small-screen "On this page" menu works when Quarto rewrites TOC links to absolute URLs.
 - Tag cloud in the sidebar is taller (18rem) before it scrolls.
 - Inline code and plain (language-less) output blocks are styled separately, in both themes.

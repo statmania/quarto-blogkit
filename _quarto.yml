@@ -2,6 +2,7 @@ project:
   type: website
   output-dir: docs            # GitHub Pages: Settings > Pages > "main" branch, "/docs" folder
   pre-render: _extensions/blogkit/build_site_data.py
+  post-render: _extensions/blogkit/repair_index.py   # keeps the homepage themed after single-post renders
   resources:
     - img/placeholder.svg      # used by the homepage listing for posts without an image
   render:
