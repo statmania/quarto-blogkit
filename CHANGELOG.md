@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Desktop: the "On this page" table of contents is sticky, so it stays in view while the article scrolls. It sits in a track above the archive and tag cloud and stops before them, so nothing overlaps and the sidebar has no inner scrollbar.
 - Post pages: the author card now comes right after the tags, followed by previous/next post links (with thumbnails; previous = older, next = newer) and then the related posts. New labels `prevPost` and `nextPost`.
 - Categories page (`categories.qmd`, created by the hook like `tags.qmd`): a category cloud and a paginated post list, linked as `categories.html#category=<name>`.
 - Related posts show each post's thumbnail (its front-matter `image`) beside the title and date (`img/placeholder.svg` when a post has none; the thumbnail is dropped if it cannot load). The hook now writes `image` into `blogkit-data.js`.
