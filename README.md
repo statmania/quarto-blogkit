@@ -178,7 +178,8 @@ blogkit:
   authors-file: authors.yml
   per-page: 10              # pagination on tag and author pages
   related: 5                # related posts under each post
-  hero-topics: 8            # topic chips in the homepage hero tools (see below)
+  hero-topics: 5            # topic chips in the homepage hero tools (see below)
+  hero-tagline: "..."        # one line above the hero stats
   labels:                   # reword or translate interface text
     archive: Archiv
     tags: Schlagworte
@@ -189,7 +190,7 @@ Label keys: `searchPosts`, `topics`, `updated`, `rss`, `allPosts`, `prevPost`, `
 
 ## Homepage hero tools
 
-Put `<div id="bk-hero-tools"></div>` inside your homepage hero (raw HTML in `index.qmd`). The script fills it with a search box, chips for the most-used tags (`hero-topics`, default 8) and a stats strip (posts, topics, last update, RSS link). The search box drives the listing's own filter, so keep `filter-ui: true` in the `listing:`; the listing's filter box is hidden when the tools are present. The headline and tagline around it are your own HTML. Avoid a raw `<h1>` there (Quarto lifts it into the hidden page title); use `<p role="heading" aria-level="1">`.
+Inside your homepage hero put `{{< include _bk-hero-tools.html >}}` (the file is generated on every render, so the tools are in the page from the first paint; split your raw HTML hero into two ```` ```{=html} ```` blocks around the include). Set the tagline with `hero-tagline:` under `blogkit:`. Without the include you can use an empty `<div id="bk-hero-tools" data-tagline="..."></div>` and the script builds the same thing in the browser (it appears a moment after load). The tools are a search box, chips for the most-used tags (`hero-topics`, default 5, one scrollable row with a "more" link) and a stats strip (posts, topics, last update, RSS link). (For the empty-div form, put the tagline in `data-tagline="..."` on the div.) The search box drives the listing's own filter, so keep `filter-ui: true` in the `listing:`; the listing's filter box is hidden when the tools are present. The headline and tagline around it are your own HTML. Avoid a raw `<h1>` there (Quarto lifts it into the hidden page title); use `<p role="heading" aria-level="1">`.
 
 ## Logo
 

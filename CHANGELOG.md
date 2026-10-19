@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Hero tools are now rendered into the page at build time: the hook writes `_bk-hero-tools.html` (search, chips, stats) and you add `{{< include _bk-hero-tools.html >}}` in the hero instead of an empty `<div id="bk-hero-tools">`. The tools are present from the first paint (no pop-in); `blogkit.js` only attaches the search. New option `hero-tagline`. The old empty-div form still works (built in the browser).
+- Smoother homepage load: the hero tools reserve their height until the script fills them (the page below no longer jumps), fade in, and the listing's own filter box is hidden by CSS from the start instead of flashing.
+- Hero tools are more compact: search and a single row of chips (default 5, scrolls sideways, plus a "more" link to the tags page) sit side by side from 768px up; `data-tagline="..."` on `#bk-hero-tools` puts a one-line description above the stats line (hidden on phones). New label `moreTopics`; `hero-topics` now defaults to 5.
 - Homepage hero tools: add `<div id="bk-hero-tools"></div>` inside a hero and `blogkit.js` fills it with a search box (drives the listing's filter, so keep `filter-ui: true`), chips for the most-used tags and a stats strip (posts, topics, last update, RSS). Labels `searchPosts`, `topics`, `updated`, `rss`; option `hero-topics` (number of chips).
 - Tags and categories pages list all posts (paginated) until a tag or category is picked, instead of showing only a hint. New label `allPosts`.
 - Tag, category and author pages list posts as thumbnail rows (cover image, title, date and description), the same look as related posts.
