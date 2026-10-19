@@ -192,6 +192,10 @@ Label keys: `searchPosts`, `topics`, `updated`, `rss`, `allPosts`, `prevPost`, `
 
 Inside your homepage hero put `{{< include _bk-hero-tools.html >}}` (the file is generated on every render, so the tools are in the page from the first paint; split your raw HTML hero into two ```` ```{=html} ```` blocks around the include). Set the tagline with `hero-tagline:` under `blogkit:`. Without the include you can use an empty `<div id="bk-hero-tools" data-tagline="..."></div>` and the script builds the same thing in the browser (it appears a moment after load). The tools are a search box, chips for the most-used tags (`hero-topics`, default 5, one scrollable row with a "more" link) and a stats strip (posts, topics, last update, RSS link). (For the empty-div form, put the tagline in `data-tagline="..."` on the div.) The search box drives the listing's own filter, so keep `filter-ui: true` in the `listing:`; the listing's filter box is hidden when the tools are present. The headline and tagline around it are your own HTML. Avoid a raw `<h1>` there (Quarto lifts it into the hidden page title); use `<p role="heading" aria-level="1">`.
 
+## Figures in the light theme
+
+Draw generated figures dark. In the light theme blogkit inverts them (`invert(1) hue-rotate(180deg)`): post-body `.svg` images and PNG covers that have a same-named SVG next to them (flagged `adapt` in `blogkit-data.js` by the hook). Photos, screenshots and real plots are never touched. Check every new figure in both themes.
+
 ## Logo
 
 The starter site ships a **sample logo** (`img/logo.svg`) and shows it in the navbar through `logo:` in `_quarto.yml`. **Replace it with your own**: overwrite `img/logo.svg` (or point `logo:` at a PNG or SVG of your choice). Remove the `logo:` line to show no logo.
