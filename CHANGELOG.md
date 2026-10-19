@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Homepage hero tools: add `<div id="bk-hero-tools"></div>` inside a hero and `blogkit.js` fills it with a search box (drives the listing's filter, so keep `filter-ui: true`), chips for the most-used tags and a stats strip (posts, topics, last update, RSS). Labels `searchPosts`, `topics`, `updated`, `rss`; option `hero-topics` (number of chips).
 - Tags and categories pages list all posts (paginated) until a tag or category is picked, instead of showing only a hint. New label `allPosts`.
 - Tag, category and author pages list posts as thumbnail rows (cover image, title, date and description), the same look as related posts.
 - Desktop: the "On this page" table of contents is sticky, so it stays in view while the article scrolls. It sits in a track above the archive and tag cloud and stops before them, so nothing overlaps and the sidebar has no inner scrollbar.

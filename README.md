@@ -178,13 +178,18 @@ blogkit:
   authors-file: authors.yml
   per-page: 10              # pagination on tag and author pages
   related: 5                # related posts under each post
+  hero-topics: 8            # topic chips in the homepage hero tools (see below)
   labels:                   # reword or translate interface text
     archive: Archiv
     tags: Schlagworte
     related: Weitere Beiträge
 ```
 
-Label keys: `onThisPage`, `archive`, `tags`, `related`, `allCategories`, `allTags`, `category`, `tag`, `pickTag`, `post`, `posts`, `prev`, `next`, `allBy` (uses `{n}` and `{name}`), `of` (uses `{a}` and `{b}`).
+Label keys: `searchPosts`, `topics`, `updated`, `rss`, `allPosts`, `prevPost`, `nextPost`, `categories`, `pickCategory`, `onThisPage`, `archive`, `tags`, `related`, `allCategories`, `allTags`, `category`, `tag`, `pickTag`, `post`, `posts`, `prev`, `next`, `allBy` (uses `{n}` and `{name}`), `of` (uses `{a}` and `{b}`).
+
+## Homepage hero tools
+
+Put `<div id="bk-hero-tools"></div>` inside your homepage hero (raw HTML in `index.qmd`). The script fills it with a search box, chips for the most-used tags (`hero-topics`, default 8) and a stats strip (posts, topics, last update, RSS link). The search box drives the listing's own filter, so keep `filter-ui: true` in the `listing:`; the listing's filter box is hidden when the tools are present. The headline and tagline around it are your own HTML. Avoid a raw `<h1>` there (Quarto lifts it into the hidden page title); use `<p role="heading" aria-level="1">`.
 
 ## Logo
 
