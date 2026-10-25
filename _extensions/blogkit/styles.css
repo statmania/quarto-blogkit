@@ -442,14 +442,16 @@ a.bk-tag{ text-decoration: none; display: inline-block; }
   }
 }
 
-/* ---- Desktop: the archive and tag cloud follow "On this page" directly, so they move up
-   or down with the length of the TOC (no sticky TOC, which would need the widgets pushed to the bottom). ---- */
+/* ---- Desktop: "On this page", archive and tag cloud form one block that follows the article
+   (sticky, no gaps). blogkit.js sets its `top` so a tall block still shows its bottom. ---- */
 @media (min-width: 992px){
   #quarto-margin-sidebar:has(.bk-toc-track){
-    max-height: none !important; height: auto !important;
+    display: flex; flex-direction: column;
+    max-height: none !important; height: auto !important; align-self: stretch;
   }
+  .bk-toc-track{ position: sticky; top: 5.5rem; align-self: flex-start; width: 100%; }
   .bk-toc-track #TOC{ position: static; max-height: none; overflow: visible; }
-  #quarto-margin-sidebar:has(.bk-toc-track) #bk-widgets{ margin-top: 1.5rem; }
+  .bk-toc-track #bk-widgets{ margin-top: 1.5rem; }
 }
 
 /* ---- Tags page: cloud in the margin ---- */

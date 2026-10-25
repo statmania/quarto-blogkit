@@ -213,9 +213,22 @@
     // Posts on small screens: Quarto hides the sidebar, so widgets go under the article.
     function place() {
       var bottom = small.matches && side.querySelector('#TOC') && main;
+      var track = side.querySelector('.bk-toc-track');
       w.classList.toggle('bk-widgets-bottom', !!bottom);
-      (bottom ? main : side).appendChild(w);
+      (bottom ? main : (track || side)).appendChild(w);   // desktop: widgets ride with the TOC in one sticky block
+      stick();
     }
+    // The block sticks at the top while reading; if it is taller than the window, let its bottom
+    // reach the window bottom instead, so nothing is cut off and no scrollbar is needed.
+    function stick() {
+      var track = side.querySelector('.bk-toc-track');
+      if (!track) return;
+      var top = Math.min(88, window.innerHeight - track.offsetHeight - 16);
+      track.style.top = top + 'px';
+    }
+    window.addEventListener('resize', stick);
+    window.addEventListener('load', stick);
+    if (window.ResizeObserver) { var ro = new ResizeObserver(stick); var tr = side.querySelector('.bk-toc-track'); if (tr) ro.observe(tr); }
     place();
     if (small.addEventListener) small.addEventListener('change', place);
   }
