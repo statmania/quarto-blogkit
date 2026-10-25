@@ -218,13 +218,13 @@
       (bottom ? main : (track || side)).appendChild(w);   // desktop: widgets ride with the TOC in one sticky block
       stick();
     }
-    // The block sticks at the top while reading; if it is taller than the window, let its bottom
-    // reach the window bottom instead, so nothing is cut off and no scrollbar is needed.
+    // The block sticks at the top while reading. "On this page" must stay fully in view, so only
+    // the widgets below it may run past the window bottom (they show at the end of the article).
     function stick() {
-      var track = side.querySelector('.bk-toc-track');
+      var track = side.querySelector('.bk-toc-track'), toc = track && track.querySelector('#TOC');
       if (!track) return;
-      var top = Math.min(88, window.innerHeight - track.offsetHeight - 16);
-      track.style.top = top + 'px';
+      var h = toc ? toc.offsetHeight : 0;
+      track.style.top = Math.min(88, window.innerHeight - h - 16) + 'px';
     }
     window.addEventListener('resize', stick);
     window.addEventListener('load', stick);
