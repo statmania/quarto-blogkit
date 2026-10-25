@@ -449,8 +449,8 @@
   // and would cancel a smooth scroll, so the jump is instant and repeated after the next render.
   var pendingTop = false;
   function toTop() {
-    window.scrollTo(0, 0);
-    requestAnimationFrame(function () { window.scrollTo(0, 0); setTimeout(function () { window.scrollTo(0, 0); }, 120); });
+    window.scrollTo({top: 0, behavior: 'instant'});
+    requestAnimationFrame(function () { window.scrollTo({top: 0, behavior: 'instant'}); setTimeout(function () { window.scrollTo({top: 0, behavior: 'instant'}); }, 120); });
   }
   function pager(nav, pages, page, onPage) {
     nav.textContent = '';
