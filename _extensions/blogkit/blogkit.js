@@ -448,7 +448,10 @@
   // Pager clicks jump to the top. Some pages re-render later (on hashchange), which shrinks the page
   // and would cancel a smooth scroll, so the jump is instant and repeated after the next render.
   var pendingTop = false;
-  function toTop() { window.scrollTo(0, 0); }
+  function toTop() {
+    window.scrollTo(0, 0);
+    requestAnimationFrame(function () { window.scrollTo(0, 0); setTimeout(function () { window.scrollTo(0, 0); }, 120); });
+  }
   function pager(nav, pages, page, onPage) {
     nav.textContent = '';
     nav.hidden = pages < 2;
