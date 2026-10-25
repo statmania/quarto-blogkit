@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Post pages (desktop): the archive and tag cloud sit directly below "On this page" and follow its length, instead of being pushed to the bottom of the sidebar; the TOC is no longer sticky.
 - Sidebar tag cloud shows only the 15 most-used tags (no scroller), followed by an "All tags ›" link to the tags page.
 - Hero stats strip has an icon (inline SVG, no dependency) before each item: posts, topics, last update and RSS.
 - Light theme: generated figures (post-body SVGs, and PNG covers that have a same-named SVG, flagged `adapt` in `blogkit-data.js`) are inverted in the light theme so they no longer show as dark boxes; photos and real plots are left alone. White hero search field in light mode.

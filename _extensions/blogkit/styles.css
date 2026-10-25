@@ -442,22 +442,14 @@ a.bk-tag{ text-decoration: none; display: inline-block; }
   }
 }
 
-/* ---- Desktop: the "On this page" TOC stays in view while the article scrolls.
-   The sidebar is a column; the track above the widgets holds the sticky TOC. ---- */
+/* ---- Desktop: the archive and tag cloud follow "On this page" directly, so they move up
+   or down with the length of the TOC (no sticky TOC, which would need the widgets pushed to the bottom). ---- */
 @media (min-width: 992px){
-  /* Quarto sets an inline max-height/top on the sidebar; the column must be as tall as the article */
   #quarto-margin-sidebar:has(.bk-toc-track){
-    display: flex; flex-direction: column;
-    max-height: none !important; height: auto !important; align-self: stretch;
+    max-height: none !important; height: auto !important;
   }
-  .bk-toc-track{ flex: 1 1 auto; }
-  .bk-toc-track #TOC{
-    position: sticky;
-    top: 5.5rem;
-    max-height: calc(100vh - 7rem);
-    overflow-y: auto;
-    scrollbar-width: thin;
-  }
+  .bk-toc-track #TOC{ position: static; max-height: none; overflow: visible; }
+  #quarto-margin-sidebar:has(.bk-toc-track) #bk-widgets{ margin-top: 1.5rem; }
 }
 
 /* ---- Tags page: cloud in the margin ---- */
