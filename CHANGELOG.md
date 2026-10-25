@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Sidebar: tag cloud above the archive. Every pager (tags, categories, author pages and the homepage listing) scrolls to the top of the page when a page is picked.
 - Post pages (desktop): "On this page", the archive and the tag cloud form one sticky block that follows the article, with the widgets directly below the TOC (no gap, no inner scrollbar); "On this page" always stays in view, the widgets below it may extend past the window bottom until the article ends.
 - Sidebar tag cloud shows only the 15 most-used tags (no scroller), followed by an "All tags ›" link to the tags page.
 - Hero stats strip has an icon (inline SVG, no dependency) before each item: posts, topics, last update and RSS.

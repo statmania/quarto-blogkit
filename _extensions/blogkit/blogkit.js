@@ -208,8 +208,8 @@
     }
     var w = el('div');
     w.id = 'bk-widgets';
-    w.appendChild(archive(D.posts));
     w.appendChild(cloud(D.posts));
+    w.appendChild(archive(D.posts));
     // Posts on small screens: Quarto hides the sidebar, so widgets go under the article.
     function place() {
       var bottom = small.matches && side.querySelector('#TOC') && main;
@@ -453,13 +453,16 @@
       b.type = 'button';
       b.disabled = !!off;
       if (cur) b.setAttribute('aria-current', 'page');
-      b.addEventListener('click', function () { onPage(n); });
+      b.addEventListener('click', function () { onPage(n); window.scrollTo({top: 0, behavior: 'smooth'}); });
       nav.appendChild(b);
     }
     btn('‹ Prev', page - 1, false, page === 1);
     for (var i = 1; i <= pages; i++) btn(String(i), i, i === page, false);
     btn('Next ›', page + 1, false, page === pages);
   }
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('.pagination a.page-link')) window.scrollTo({top: 0, behavior: 'smooth'});
+  });
   function hashParams() { return new URLSearchParams(location.hash.slice(1)); }
 
   // ---------- tags page and categories page (same widget, different facet) ----------
@@ -569,7 +572,6 @@
       count.textContent = t('of', {a: hit.length, b: posts.length});
       pager(nav, pages, st.page, function (n) {
         st.page = n; write(); render();
-        root.scrollIntoView({behavior: 'smooth'});
       });
     }
     function change() { st.cat = selCat.value; st.tag = selTag.value; st.page = 1; write(); render(); }
