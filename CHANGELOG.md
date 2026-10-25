@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Sidebar tag cloud shows only the 15 most-used tags (no scroller), followed by an "All tags ›" link to the tags page.
 - Hero stats strip has an icon (inline SVG, no dependency) before each item: posts, topics, last update and RSS.
 - Light theme: generated figures (post-body SVGs, and PNG covers that have a same-named SVG, flagged `adapt` in `blogkit-data.js`) are inverted in the light theme so they no longer show as dark boxes; photos and real plots are left alone. White hero search field in light mode.
 - Hero tools are now rendered into the page at build time: the hook writes `_bk-hero-tools.html` (search, chips, stats) and you add `{{< include _bk-hero-tools.html >}}` in the hero instead of an empty `<div id="bk-hero-tools">`. The tools are present from the first paint (no pop-in); `blogkit.js` only attaches the search. New option `hero-tagline`. The old empty-div form still works (built in the browser).

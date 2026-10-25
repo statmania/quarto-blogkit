@@ -181,13 +181,17 @@
     posts.forEach(function (p) { new Set(p.tags).forEach(function (t) { all.push(t); }); });
     return counter(all);
   }
+  var SIDEBAR_TAGS = 15;   // sidebar cloud shows only the most-used tags, then a link to tags.html
   function cloud(posts) {
     var sec = el('section', 'bk-widget bk-tags');
     sec.setAttribute('aria-label', 'Tag cloud');
     sec.appendChild(el('h3', 'bk-widget-title', t('tags')));
     var box = el('div', 'bk-tag-cloud');
-    box.appendChild(chips(tagCounts(posts)));
+    var all = tagCounts(posts), top = {};
+    byCount(all).slice(0, SIDEBAR_TAGS).forEach(function (k) { top[k] = all[k]; });
+    box.appendChild(chips(top));
     sec.appendChild(box);
+    sec.appendChild(link(base + 'tags.html', t('allTags') + ' \u203a', 'bk-tags-all'));
     return sec;
   }
   function sidebarWidgets(D) {

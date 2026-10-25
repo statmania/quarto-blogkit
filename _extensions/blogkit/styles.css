@@ -364,7 +364,9 @@ div.callout code{
 #bk-widgets{ margin-top: 1.5rem; }
 /* Long tag list: fixed-height scroller */
 .bk-tag-cloud{ max-height: 18rem; overflow-y: auto; padding-right: .4rem; }
-.bk-tag-cloud-all{ max-height: none; overflow: visible; }
+.bk-tag-cloud-all, .bk-tags .bk-tag-cloud{ max-height: none; overflow: visible; padding-right: 0; }
+.bk-tags-all{ display: inline-block; margin-top: .6rem; font-size: .85rem; text-decoration: none; color: var(--bk-cyan); }
+.bk-tags-all:hover{ text-decoration: underline; }
 /* futuristic scrollbar (WebKit/Blink); Firefox gets scrollbar-color */
 .bk-tag-cloud::-webkit-scrollbar{ width: 6px; }
 .bk-tag-cloud::-webkit-scrollbar-track{ background: rgba(0,229,255,.06); border-radius: 6px; }
