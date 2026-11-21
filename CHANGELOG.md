@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Fix: the right sidebar (On this page, tag cloud, archive) vanished while scrolling past the author card. Quarto hides the margin sidebar next to any `<aside>` in the page, so the author card is now a `<div>`. Sites should not put `<aside>` elements in the page or the sidebar either.
+
 - Theme toggle shows a moon (light theme on) or a sun (dark theme on) instead of Quarto's on/off switch icon. The light theme is now the default (it is listed first in the extension's `theme:`); the choice is still remembered.
 
 - Callouts: flat panel with a faint tint of the callout colour instead of the grid-and-glow background; brighter body text, tinted header bar, darker code chips (dark and light themes).
