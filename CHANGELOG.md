@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Theme toggle shows a moon (light theme on) or a sun (dark theme on) instead of Quarto's on/off switch icon. The light theme is now the default (it is listed first in the extension's `theme:`); the choice is still remembered.
+
+- Callouts: flat panel with a faint tint of the callout colour instead of the grid-and-glow background; brighter body text, tinted header bar, darker code chips (dark and light themes).
+
+- Constellation hero: `.bk-hero-wrap` with a `canvas.bk-hero-canvas` (drifting dots joined by faint lines, still under reduced motion), a headline and the hero tools, with HUD corner brackets and a light-theme variant. `blogkit.js` animates the canvas, so no inline script is needed. The sample homepage uses it; the plain `.bk-hero` band still works.
 - Sidebar: tag cloud above the archive. Every pager (tags, categories, author pages and the homepage listing) scrolls to the top of the page when a page is picked.
 - Post pages (desktop): "On this page", the archive and the tag cloud form one sticky block that follows the article, with the widgets directly below the TOC (no gap, no inner scrollbar); "On this page" always stays in view, the widgets below it may extend past the window bottom until the article ends.
 - Sidebar tag cloud shows only the 15 most-used tags (no scroller), followed by an "All tags ›" link to the tags page.

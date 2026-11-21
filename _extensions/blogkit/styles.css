@@ -266,31 +266,22 @@ main.content hr{ border-color: rgba(255,255,255,0.12); }
    explicit high-contrast text. */
 div.callout.callout-style-default,
 div.callout.callout-style-simple{
-  /* futuristic panel: tinted glow from the corner + faint grid lines */
-  background:
-    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px) 0 0 / 22px 22px,
-    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px) 0 0 / 22px 22px,
-    linear-gradient(135deg, rgba(0,229,255,0.18) 0%, rgba(168,85,247,0.10) 55%, rgba(10,15,30,0.92) 100%),
-    var(--bk-bg2) !important;
-  background:
-    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px) 0 0 / 22px 22px,
-    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px) 0 0 / 22px 22px,
-    linear-gradient(135deg, color-mix(in srgb, var(--callout-color, #00e5ff) 24%, transparent) 0%, rgba(168,85,247,0.10) 55%, rgba(10,15,30,0.92) 100%),
-    var(--bk-bg2) !important;
-  box-shadow: 0 0 22px color-mix(in srgb, var(--callout-color, #00e5ff) 22%, transparent), inset 0 0 0 1px rgba(255,255,255,0.03);
+  /* flat dark panel with a faint tint of the callout colour (no grid, no glow) */
+  background: color-mix(in srgb, var(--callout-color, #00e5ff) 9%, var(--bk-bg2)) !important;
+  box-shadow: none;
   border: 1px solid rgba(255,255,255,0.10) !important;
-  border-left: 5px solid var(--callout-color, var(--bk-cyan)) !important;
-  border-radius: 8px;
-  color: var(--bk-text);
+  border-left: 4px solid var(--callout-color, var(--bk-cyan)) !important;
+  border-radius: 10px;
+  color: #f2f5ff;
 }
 div.callout.callout-style-default .callout-body-container,
 div.callout.callout-style-default .callout-body,
 div.callout.callout-style-simple .callout-body-container,
 div.callout.callout-style-simple .callout-body{
-  color: var(--bk-text) !important;
+  color: #f2f5ff !important;
 }
 div.callout.callout-style-default > .callout-header{
-  background: rgba(255,255,255,0.05) !important;
+  background: color-mix(in srgb, var(--callout-color, #00e5ff) 16%, var(--bk-bg2)) !important;
   color: #fff !important;
   font-weight: 600;
 }
@@ -304,8 +295,8 @@ div.callout.callout-important{ --callout-color: var(--bk-pink); }
 div.callout.callout-warning{   --callout-color: #fbbf24; }
 div.callout.callout-caution{   --callout-color: #fb923c; }
 div.callout code{
-  color: #8be9ff;
-  background: rgba(0,229,255,0.10);
+  color: #9eefff;
+  background: rgba(0,0,0,0.35);
 }
 
 /* ---- Reveal/Hide code + hint (see code-reveal.html) ---- */
@@ -696,9 +687,8 @@ body.quarto-light .bk-toc-mobile a.active{ text-shadow: none; }
 /* callouts: light panel, coloured left border */
 body.quarto-light div.callout.callout-style-default,
 body.quarto-light div.callout.callout-style-simple{
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--callout-color, #007a99) 14%, #ffffff) 0%, #ffffff 70%) !important;
-  box-shadow: 0 4px 16px rgba(20,40,90,0.08);
+  background: color-mix(in srgb, var(--callout-color, #007a99) 7%, #ffffff) !important;
+  box-shadow: none;
   border: 1px solid rgba(20,40,90,0.12) !important;
   border-left: 5px solid var(--callout-color, var(--bk-cyan)) !important;
 }
@@ -713,6 +703,16 @@ body.quarto-light div.callout code{ color: #0b5d75; background: rgba(0,122,153,.
 /* the theme toggle in the (dark) navbar */
 #quarto-header .quarto-color-scheme-toggle{ color: var(--bk-text); }
 #quarto-header .quarto-color-scheme-toggle:hover{ color: var(--bk-cyan); }
+
+/* theme toggle: a moon while the light theme is on (click for dark), a sun while the dark theme is on (click for light), instead of Quarto's on/off switch. The first scheme listed in the extension's theme is the one without `.alternate`. */
+#quarto-header .quarto-color-scheme-toggle .bi::before{
+  background-image: none !important; background-color: currentColor;
+  width: 1.1rem; height: 1.1rem;
+  -webkit-mask: var(--bk-toggle-icon) center / contain no-repeat;
+          mask: var(--bk-toggle-icon) center / contain no-repeat;
+}
+#quarto-header .quarto-color-scheme-toggle{ --bk-toggle-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z'/%3E%3C/svg%3E"); }
+#quarto-header .quarto-color-scheme-toggle.alternate{ --bk-toggle-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z'/%3E%3C/svg%3E"); }
 
 /* ---- Optional homepage hero (.bk-hero), a dark band that works in both themes ---- */
 .bk-hero{
@@ -734,6 +734,33 @@ body.quarto-light main.content .bk-hero p.bk-subtitle{ color: var(--bk-muted); }
 body.quarto-light .quarto-title-meta-heading{ color: #56628a; }
 body.quarto-light .quarto-title-meta-contents,
 body.quarto-light .quarto-title-meta-contents p{ color: #25304f; }
+
+/* ---- Constellation hero (.bk-hero-wrap): headline + hero tools over a drifting-dots canvas ---- */
+.bk-hero-wrap{
+  position: relative; overflow: hidden; margin: 1rem 0 1.4rem; border-radius: 14px;
+  background: radial-gradient(1200px 500px at 50% -10%, #0e1930 0%, var(--bk-bg) 60%);
+  color: var(--bk-text);
+}
+.bk-hero-canvas{ position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: .45; }
+.bk-hero-inner{ position: relative; z-index: 2; text-align: center; padding: 1.2rem 1.5rem 1rem; }
+.bk-hero-inner .bk-hero-title{
+  font-size: clamp(1.05rem, 2.4vw, 1.45rem); font-weight: 700; margin: 0; letter-spacing: -0.01em;
+  color: var(--bk-text); border: 0;
+}
+.bk-hero-wrap::after{            /* HUD-style corner brackets just inside the edge */
+  content: ""; position: absolute; inset: 8px; z-index: 3; pointer-events: none; opacity: .75;
+  --br: var(--bk-cyan);
+  background:
+    linear-gradient(var(--br), var(--br)) top left / 16px 2px no-repeat,
+    linear-gradient(var(--br), var(--br)) top left / 2px 16px no-repeat,
+    linear-gradient(var(--br), var(--br)) top right / 16px 2px no-repeat,
+    linear-gradient(var(--br), var(--br)) top right / 2px 16px no-repeat,
+    linear-gradient(var(--br), var(--br)) bottom left / 16px 2px no-repeat,
+    linear-gradient(var(--br), var(--br)) bottom left / 2px 16px no-repeat,
+    linear-gradient(var(--br), var(--br)) bottom right / 16px 2px no-repeat,
+    linear-gradient(var(--br), var(--br)) bottom right / 2px 16px no-repeat;
+}
+body.quarto-light .bk-hero-wrap{ background: radial-gradient(1200px 500px at 50% -10%, #ffffff 0%, var(--bk-bg) 70%); }
 
 /* navbar logo */
 #quarto-header .navbar-logo{ height: 48px; width: auto; max-height: none; }

@@ -4,13 +4,13 @@ A Quarto extension and starter site that gives your blog a dark/light theme, tag
 
 Repository: <https://github.com/statmania/quarto-blogkit>
 
-| Dark (default) | Light (navbar toggle) |
+| Dark | Light (default) |
 | :--- | :--- |
 | ![Homepage in the dark theme](assets/screenshot-dark.jpg) | ![A post in the light theme](assets/screenshot-light.jpg) |
 
 ## Features
 
-- Dark and light theme with a navbar toggle (dark by default, choice remembered)
+- Dark and light theme with a navbar toggle (light by default, choice remembered)
 - Sidebar archive and tag cloud
 - Tags page and categories page with pagination, plus a tags row under each post
 - Related posts with thumbnails, ranked by shared tags and categories
@@ -190,7 +190,29 @@ Label keys: `searchPosts`, `topics`, `updated`, `rss`, `allPosts`, `prevPost`, `
 
 ## Homepage hero tools
 
-Inside your homepage hero put `{{< include _bk-hero-tools.html >}}` (the file is generated on every render, so the tools are in the page from the first paint; split your raw HTML hero into two ```` ```{=html} ```` blocks around the include). Set the tagline with `hero-tagline:` under `blogkit:`. Without the include you can use an empty `<div id="bk-hero-tools" data-tagline="..."></div>` and the script builds the same thing in the browser (it appears a moment after load). The tools are a search box, chips for the most-used tags (`hero-topics`, default 5, one scrollable row with a "more" link) and a stats strip (posts, topics, last update, RSS link). (For the empty-div form, put the tagline in `data-tagline="..."` on the div.) The search box drives the listing's own filter, so keep `filter-ui: true` in the `listing:`; the listing's filter box is hidden when the tools are present. The headline and tagline around it are your own HTML. Avoid a raw `<h1>` there (Quarto lifts it into the hidden page title); use `<p role="heading" aria-level="1">`.
+Inside your homepage hero put `{{< include _bk-hero-tools.html >}}` (the file is generated on every render, but Quarto resolves the include before the hook runs, so a brand-new project needs the file to exist once: `echo '<!-- generated -->' > _bk-hero-tools.html`; so the tools are in the page from the first paint; split your raw HTML hero into two ```` ```{=html} ```` blocks around the include). Set the tagline with `hero-tagline:` under `blogkit:`. Without the include you can use an empty `<div id="bk-hero-tools" data-tagline="..."></div>` and the script builds the same thing in the browser (it appears a moment after load). The tools are a search box, chips for the most-used tags (`hero-topics`, default 5, one scrollable row with a "more" link) and a stats strip (posts, topics, last update, RSS link). (For the empty-div form, put the tagline in `data-tagline="..."` on the div.) The search box drives the listing's own filter, so keep `filter-ui: true` in the `listing:`; the listing's filter box is hidden when the tools are present. The headline and tagline around it are your own HTML. Avoid a raw `<h1>` there (Quarto lifts it into the hidden page title); use `<p role="heading" aria-level="1">`.
+
+### Constellation hero
+
+For the hero with drifting dots behind the headline, wrap it like this (the sample `index.qmd` does):
+
+````markdown
+```{=html}
+<div class="bk-hero-wrap">
+  <canvas class="bk-hero-canvas" aria-hidden="true"></canvas>
+  <div class="bk-hero-inner">
+    <p class="bk-hero-title" role="heading" aria-level="1">Your headline</p>
+```
+
+{{< include _bk-hero-tools.html >}}
+
+```{=html}
+  </div>
+</div>
+```
+````
+
+`blogkit.js` animates every `canvas.bk-hero-canvas` (static under `prefers-reduced-motion`), so no script is needed in the page.
 
 ## Figures in the light theme
 

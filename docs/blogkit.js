@@ -16,7 +16,8 @@
   var LABELS = {
     onThisPage: 'On this page', archive: 'Archive', tags: 'Tags', categories: 'Categories', related: 'Related posts', prevPost: 'Previous post', nextPost: 'Next post',
     allCategories: 'All categories', allTags: 'All tags', category: 'Category', tag: 'Tag',
-    pickTag: 'Pick a tag to see its posts.', pickCategory: 'Pick a category to see its posts.', post: 'post', posts: 'posts',
+    pickTag: 'Pick a tag to see its posts.', pickCategory: 'Pick a category to see its posts.', post: 'post', posts: 'posts', allPosts: 'All posts',
+    searchPosts: 'Search posts', moreTopics: 'more', topics: 'topics', updated: 'updated', rss: 'RSS',
     prev: '\u2039 Prev', next: 'Next \u203a', allBy: 'All {n} posts by {name}', of: '{a} of {b} posts'
   };
   function t(key, vars) {
@@ -110,11 +111,16 @@
     return {posts: posts, authors: authors, byName: byName};
   }
   function postHref(p) { return base + p.href; }
-  function postItem(p) {
-    var li = el('li');
-    li.appendChild(link(postHref(p), p.title));
-    li.appendChild(el('span', 'bk-tp-date', p.date));
-    if (p.desc) li.appendChild(el('p', null, p.desc));
+  function postItem(p) {   // tag, category and author lists: thumbnail, title, date, description
+    var li = el('li', 'bk-rel-item bk-post-item');
+    var a = link(postHref(p), '', 'bk-rel-link');
+    a.appendChild(thumb(p));
+    var body = el('span', 'bk-rel-body');
+    body.appendChild(el('span', 'bk-rel-title', p.title));
+    body.appendChild(el('span', 'bk-tp-date', p.date));
+    if (p.desc) body.appendChild(el('span', 'bk-rel-desc', p.desc));
+    a.appendChild(body);
+    li.appendChild(a);
     return li;
   }
 
@@ -175,13 +181,17 @@
     posts.forEach(function (p) { new Set(p.tags).forEach(function (t) { all.push(t); }); });
     return counter(all);
   }
+  var SIDEBAR_TAGS = 15;   // sidebar cloud shows only the most-used tags, then a link to tags.html
   function cloud(posts) {
     var sec = el('section', 'bk-widget bk-tags');
     sec.setAttribute('aria-label', 'Tag cloud');
     sec.appendChild(el('h3', 'bk-widget-title', t('tags')));
     var box = el('div', 'bk-tag-cloud');
-    box.appendChild(chips(tagCounts(posts)));
+    var all = tagCounts(posts), top = {};
+    byCount(all).slice(0, SIDEBAR_TAGS).forEach(function (k) { top[k] = all[k]; });
+    box.appendChild(chips(top));
     sec.appendChild(box);
+    sec.appendChild(link(base + 'tags.html', t('allTags') + ' \u203a', 'bk-tags-all'));
     return sec;
   }
   function sidebarWidgets(D) {
@@ -198,14 +208,27 @@
     }
     var w = el('div');
     w.id = 'bk-widgets';
-    w.appendChild(archive(D.posts));
     w.appendChild(cloud(D.posts));
+    w.appendChild(archive(D.posts));
     // Posts on small screens: Quarto hides the sidebar, so widgets go under the article.
     function place() {
       var bottom = small.matches && side.querySelector('#TOC') && main;
+      var track = side.querySelector('.bk-toc-track');
       w.classList.toggle('bk-widgets-bottom', !!bottom);
-      (bottom ? main : side).appendChild(w);
+      (bottom ? main : (track || side)).appendChild(w);   // desktop: widgets ride with the TOC in one sticky block
+      stick();
     }
+    // The block sticks at the top while reading. "On this page" must stay fully in view, so only
+    // the widgets below it may run past the window bottom (they show at the end of the article).
+    function stick() {
+      var track = side.querySelector('.bk-toc-track'), toc = track && track.querySelector('#TOC');
+      if (!track) return;
+      var h = toc ? toc.offsetHeight : 0;
+      track.style.top = Math.min(88, window.innerHeight - h - 16) + 'px';
+    }
+    window.addEventListener('resize', stick);
+    window.addEventListener('load', stick);
+    if (window.ResizeObserver) { var ro = new ResizeObserver(stick); var tr = side.querySelector('.bk-toc-track'); if (tr) ro.observe(tr); }
     place();
     if (small.addEventListener) small.addEventListener('change', place);
   }
@@ -228,7 +251,7 @@
     return scored.slice(0, k).map(function (x) { return x[1]; });
   }
   function thumb(p) {
-    var img = el('img', 'bk-rel-thumb');
+    var img = el('img', 'bk-rel-thumb' + (p.adapt ? ' bk-adapt' : ''));
     img.src = assetHref(p.image || 'img/placeholder.svg');   // the starter site ships img/placeholder.svg
     img.alt = '';
     img.loading = 'lazy';
@@ -330,6 +353,19 @@
       main.appendChild(box);
     }
   }
+  // listing cards: mark generated (dark) covers so the light theme can adapt them
+  function adaptCards(D) {
+    // compare resolved paths: Quarto rewrites listing hrefs to absolute URLs on load
+    var path = function (h) { return new URL(h, location.href).pathname; };
+    var adapt = {};
+    D.posts.forEach(function (p) { if (p.adapt) adapt[path(base + p.href)] = true; });
+    // grid cards: <a class="quarto-grid-link"> around the card; default cards: .quarto-post with a title link
+    document.querySelectorAll('.quarto-listing img.thumbnail-image, .quarto-post .thumbnail img').forEach(function (img) {
+      var card = img.closest('.quarto-post');
+      var a = img.closest('a[href]') || (card && card.querySelector('a[href]'));
+      if (a && adapt[path(a.getAttribute('href'))]) img.classList.add('bk-adapt');
+    });
+  }
   function homepageBylines(D) {
     document.querySelectorAll('.listing-author').forEach(function (n) {
       var a = D.byName[n.textContent.trim().toLowerCase()];
@@ -337,7 +373,85 @@
     });
   }
 
+  // ---------- homepage hero tools: search box, topic chips, stats strip ----------
+  // Fills <div id="bk-hero-tools"></div> (put it inside your hero). The search box drives
+  // Quarto's own listing filter, so it needs `filter-ui: true` in the listing.
+  var ICONS = {
+    posts: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>',
+    topics: '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/>',
+    updated: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+    rss: '<path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/>',
+  };
+  function icon(name) {
+    var s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    s.setAttribute('class', 'bk-icon'); s.setAttribute('viewBox', '0 0 24 24'); s.setAttribute('aria-hidden', 'true');
+    s.innerHTML = ICONS[name];
+    return s;
+  }
+  function heroTools(D) {
+    var root = document.getElementById('bk-hero-tools');
+    if (!root) return;
+    document.body.classList.add('bk-has-hero-tools');
+    var form, input;
+    function filter() {
+      var f = document.querySelector('.quarto-listing-filter input.search');
+      if (!f) return;
+      f.value = input.value;
+      ['input', 'keyup'].forEach(function (ev) { f.dispatchEvent(new Event(ev, {bubbles: true})); });
+    }
+    function wire() {
+      input.addEventListener('input', filter);
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        filter();
+        var l = document.querySelector('.quarto-listing');
+        if (l) l.scrollIntoView({behavior: 'smooth', block: 'start'});
+      });
+    }
+    if (root.children.length) {   // markup was included at render time (_bk-hero-tools.html): just attach the search
+      form = root.querySelector('.bk-hero-search'); input = root.querySelector('input');
+      if (form && input) wire();
+      return;
+    }
+    root.classList.add('bk-hero-built');
+    form = el('form', 'bk-hero-search');
+    form.setAttribute('role', 'search');
+    input = el('input');
+    input.type = 'search';
+    input.placeholder = t('searchPosts');
+    input.setAttribute('aria-label', t('searchPosts'));
+    form.appendChild(input);
+    wire();
+    var counts = tagCounts(D.posts);
+    var chips = el('div', 'bk-hero-chips');
+    byCount(counts).slice(0, CFG.heroTopics || 5).forEach(function (k) {
+      chips.appendChild(link(tagHref(k), k, 'bk-tag'));
+    });
+    chips.appendChild(link(base + 'tags.html', t('moreTopics') + ' \u203a', 'bk-tag bk-tag-more'));
+    var latest = D.posts.length ? D.posts[0].date : '';
+    var stats = el('p', 'bk-hero-stats');
+    var tagline = root.dataset.tagline;   // optional one-line description, shown above the stats
+    if (tagline) stats.appendChild(el('span', 'bk-hero-tagline', tagline));
+    function stat(name, text, href) {
+      var s = href ? link(href, '', 'bk-stat bk-hero-rss') : el('span', 'bk-stat');
+      s.append(icon(name), document.createTextNode(text));
+      stats.appendChild(s);
+    }
+    stat('posts', D.posts.length + ' ' + t('posts'));
+    stat('topics', Object.keys(counts).length + ' ' + t('topics'));
+    if (latest) stat('updated', t('updated') + ' ' + MONTHS[+latest.slice(5, 7) - 1].slice(0, 3) + ' ' + latest.slice(0, 4));
+    stat('rss', t('rss'), base + 'index.xml');
+    root.append(form, chips, stats);
+  }
+
   // ---------- pager (shared by tags page and author pages) ----------
+  // Pager clicks jump to the top. Some pages re-render later (on hashchange), which shrinks the page
+  // and would cancel a smooth scroll, so the jump is instant and repeated after the next render.
+  var pendingTop = false;
+  function toTop() {
+    window.scrollTo({top: 0, behavior: 'instant'});
+    requestAnimationFrame(function () { window.scrollTo({top: 0, behavior: 'instant'}); setTimeout(function () { window.scrollTo({top: 0, behavior: 'instant'}); }, 120); });
+  }
   function pager(nav, pages, page, onPage) {
     nav.textContent = '';
     nav.hidden = pages < 2;
@@ -346,13 +460,16 @@
       b.type = 'button';
       b.disabled = !!off;
       if (cur) b.setAttribute('aria-current', 'page');
-      b.addEventListener('click', function () { onPage(n); });
+      b.addEventListener('click', function () { pendingTop = true; onPage(n); toTop(); });
       nav.appendChild(b);
     }
     btn('‹ Prev', page - 1, false, page === 1);
     for (var i = 1; i <= pages; i++) btn(String(i), i, i === page, false);
     btn('Next ›', page + 1, false, page === pages);
   }
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('.pagination a.page-link')) window.scrollTo({top: 0, behavior: 'smooth'});
+  });
   function hashParams() { return new URLSearchParams(location.hash.slice(1)); }
 
   // ---------- tags page and categories page (same widget, different facet) ----------
@@ -373,7 +490,7 @@
     root.append(hint, sec, nav);
     function render() {
       var h = hashParams(), val = h.get(o.param) || '';
-      var list = val ? D.posts.filter(function (p) { return p[o.field].indexOf(val) > -1; }) : [];
+      var list = val ? D.posts.filter(function (p) { return p[o.field].indexOf(val) > -1; }) : D.posts;   // nothing picked: all posts
       if (side) {
         side.textContent = '';
         side.appendChild(el('h3', 'bk-widget-title', t(o.title)));
@@ -381,23 +498,23 @@
         box.appendChild(chips(counts, val, o.href));
         side.appendChild(box);
       }
-      hint.hidden = list.length > 0;
+      hint.hidden = !!val;
       sec.hidden = !list.length;
       sec.textContent = '';
       nav.hidden = true;
       if (!list.length) return;
       var pages = Math.ceil(list.length / per);
       var page = Math.min(Math.max(+h.get('page') || 1, 1), pages);
-      var title = el('h2', null, val + ' ');
+      var title = el('h2', null, (val || t('allPosts')) + ' ');
       title.appendChild(el('span', 'bk-count', list.length + ' ' + (list.length === 1 ? t('post') : t('posts'))));
       var ul = el('ul', 'bk-post-list');
       list.slice((page - 1) * per, page * per).forEach(function (p) { ul.appendChild(postItem(p)); });
       sec.append(title, ul);
       pager(nav, pages, page, function (n) {
-        location.hash = o.param + '=' + encodeURIComponent(val) + (n > 1 ? '&page=' + n : '');
+        location.hash = (val ? o.param + '=' + encodeURIComponent(val) : '') + (n > 1 ? (val ? '&' : '') + 'page=' + n : '');
       });
     }
-    window.addEventListener('hashchange', render);
+    window.addEventListener('hashchange', function () { render(); if (pendingTop) { pendingTop = false; toTop(); } });
     render();
   }
   function tagsPage(D) {
@@ -462,24 +579,75 @@
       count.textContent = t('of', {a: hit.length, b: posts.length});
       pager(nav, pages, st.page, function (n) {
         st.page = n; write(); render();
-        root.scrollIntoView({behavior: 'smooth'});
       });
     }
     function change() { st.cat = selCat.value; st.tag = selTag.value; st.page = 1; write(); render(); }
     selCat.addEventListener('change', change);
     selTag.addEventListener('change', change);
-    window.addEventListener('hashchange', function () { read(); render(); });
+    window.addEventListener('hashchange', function () { read(); render(); if (pendingTop) { pendingTop = false; toTop(); } });
     read(); render();
+  }
+
+  // ---------- hero constellation ----------
+  // Animates <canvas class="bk-hero-canvas"> inside a .bk-hero-wrap (drifting dots joined by faint lines).
+  function heroCanvas() {
+    var canvases = document.querySelectorAll('canvas.bk-hero-canvas');
+    Array.prototype.forEach.call(canvases, function (canvas) {
+      if (!canvas.getContext) return;
+      var ctx = canvas.getContext('2d'), wrap = canvas.parentElement, W, H, particles = [];
+      var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var count = Math.min(70, Math.floor((window.innerWidth || 1200) / 18));
+      function resize() {
+        var dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = wrap.clientWidth; H = wrap.clientHeight;
+        canvas.width = W * dpr; canvas.height = H * dpr;
+        canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        particles = [];
+        for (var i = 0; i < count; i++) {
+          particles.push({ x: Math.random() * W, y: Math.random() * H,
+            vx: (Math.random() - 0.5) * 0.25, vy: (Math.random() - 0.5) * 0.25, r: Math.random() * 1.6 + 0.6 });
+        }
+      }
+      function step() {
+        ctx.clearRect(0, 0, W, H);
+        var maxDist = 130, i, j, p, q, d;
+        for (i = 0; i < particles.length; i++) {
+          p = particles[i];
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 0 || p.x > W) p.vx *= -1;
+          if (p.y < 0 || p.y > H) p.vy *= -1;
+          for (j = i + 1; j < particles.length; j++) {
+            q = particles[j];
+            d = Math.sqrt((p.x - q.x) * (p.x - q.x) + (p.y - q.y) * (p.y - q.y));
+            if (d < maxDist) {
+              ctx.strokeStyle = 'rgba(0,229,255,' + (0.16 * (1 - d / maxDist)) + ')';
+              ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+            }
+          }
+        }
+        ctx.fillStyle = 'rgba(180,225,255,0.85)';
+        for (i = 0; i < particles.length; i++) {
+          p = particles[i]; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+        }
+        if (!still) requestAnimationFrame(step);
+      }
+      resize(); step();
+      window.addEventListener('resize', resize);
+    });
   }
 
   // ---------- go ----------
   mobileToc();
+  ready(heroCanvas);
   function start(raw) {
     var D = prepare(raw);
     tagsPage(D);
     categoriesPage(D);
     authorPage(D);
     homepageBylines(D);
+    adaptCards(D);
+    heroTools(D);
     ready(function () {
       // after load, so Quarto has already copied the TOC into its own structures
       postExtras(D);
