@@ -4,6 +4,8 @@ A Quarto extension and starter site that gives your blog a dark/light theme, tag
 
 Repository: <https://github.com/statmania/quarto-blogkit>
 
+Example site built with the template: [statmania.info/blog](https://www.statmania.info/blog/)
+
 | Dark | Light (default) |
 | :--- | :--- |
 | ![Homepage in the dark theme](assets/screenshot-dark.jpg) | ![A post in the light theme](assets/screenshot-light.jpg) |
