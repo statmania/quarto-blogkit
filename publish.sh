@@ -1,2 +1,5 @@
 #!/usr/bin/env bash
-exec bash "$(dirname "$0")/_extensions/blogkit/publish.sh" "$@"
+root="$(dirname "$0")"
+ext="$root/_extensions/statmania/blogkit"
+[ -d "$ext" ] || ext="$root/_extensions/blogkit"
+exec bash "$ext/publish.sh" "$@"

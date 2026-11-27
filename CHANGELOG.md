@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Fix: installs from GitHub failed to render, because Quarto puts the extension in `_extensions/statmania/blogkit/` while the config and docs pointed to `_extensions/blogkit/`. The starter site now runs the hooks through `scripts/pre-render.py` and `scripts/post-render.py`, which work with either folder, and the README paths for `quarto add` use the `statmania` folder.
+- Requires Quarto 1.9 or newer, matching the README.
+
 - Fix: the right sidebar (On this page, tag cloud, archive) vanished while scrolling past the author card. Quarto hides the margin sidebar next to any `<aside>` in the page, so the author card is now a `<div>`. Sites should not put `<aside>` elements in the page or the sidebar either.
 
 - Theme toggle shows a moon (light theme on) or a sun (dark theme on) instead of Quarto's on/off switch icon. The light theme is now the default (it is listed first in the extension's `theme:`); the choice is still remembered.
@@ -25,7 +28,7 @@
 - Categories page (`categories.qmd`, created by the hook like `tags.qmd`): a category cloud and a paginated post list, linked as `categories.html#category=<name>`.
 - Related posts show each post's thumbnail (its front-matter `image`) beside the title and date (`img/placeholder.svg` when a post has none; the thumbnail is dropped if it cannot load). The hook now writes `image` into `blogkit-data.js`.
 - The sample site's navbar gets a Categories link and it has a `page-footer` example (the extension already styles `.nav-footer` in both themes).
-- `repair_index.py` post-render hook (add `post-render: _extensions/blogkit/repair_index.py` under `project:`): rendering a single post makes Quarto refresh the homepage listing without the extension's format (light theme only, no CSS or scripts); the hook re-renders `index.qmd` afterwards. Replaces the extra step previously added to `publish.sh`.
+- `repair_index.py` post-render hook (add `post-render: _extensions/statmania/blogkit/repair_index.py` under `project:`): rendering a single post makes Quarto refresh the homepage listing without the extension's format (light theme only, no CSS or scripts); the hook re-renders `index.qmd` afterwards. Replaces the extra step previously added to `publish.sh`.
 - Small-screen "On this page" menu works when Quarto rewrites TOC links to absolute URLs.
 - Tag cloud in the sidebar is taller (18rem) before it scrolls.
 - Inline code and plain (language-less) output blocks are styled separately, in both themes.

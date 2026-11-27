@@ -41,7 +41,9 @@ elif [ "${#files[@]}" -gt 0 ]; then
   done
 else
   echo "==> Refreshing site data"
-  python3 _extensions/blogkit/build_site_data.py
+  ext=_extensions/statmania/blogkit
+  [ -d "$ext" ] || ext=_extensions/blogkit
+  python3 "$ext/build_site_data.py"
 fi
 
 git add -A -- .

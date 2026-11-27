@@ -4,7 +4,7 @@
 Add to _quarto.yml:
 
     project:
-      pre-render: _extensions/blogkit/build_site_data.py
+      pre-render: _extensions/statmania/blogkit/build_site_data.py
 
 On every `quarto render` (the whole project or a single post) it
 

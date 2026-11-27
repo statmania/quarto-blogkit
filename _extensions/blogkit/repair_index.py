@@ -8,7 +8,7 @@ renders index.qmd again, itself, so `quarto render posts/x.qmd` leaves a correct
 Add to _quarto.yml:
 
     project:
-      post-render: _extensions/blogkit/repair_index.py
+      post-render: _extensions/statmania/blogkit/repair_index.py
 
 It also renders index.qmd once more when the generated hero file changed. It does nothing for a
 full render otherwise, or when only index.qmd was rendered.

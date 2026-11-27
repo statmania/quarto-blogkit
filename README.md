@@ -55,7 +55,7 @@ quarto add statmania/quarto-blogkit
 project:
   type: website
   output-dir: docs                                   # or _site
-  pre-render: _extensions/blogkit/build_site_data.py
+  pre-render: _extensions/statmania/blogkit/build_site_data.py
   render:
     - "*.qmd"
     - "posts/*.qmd"
@@ -72,7 +72,7 @@ format:
 3. `index.qmd` has a listing with `categories: cloud` (copy it from the sample). The homepage sidebar sits next to it.
 4. Optional: copy the author file and publish script:
    ```bash
-   cp _extensions/blogkit/publish.sh .
+   cp _extensions/statmania/blogkit/publish.sh .
    ```
    Then create `authors.yml` (see [Authors](#authors)).
 
@@ -230,7 +230,7 @@ website:
 
 ## Theming
 
-Colours are CSS variables (`--bk-bg`, `--bk-text`, `--bk-cyan`, ...) at the top of `_extensions/blogkit/styles.css`. To override them, add your own stylesheet:
+Colours are CSS variables (`--bk-bg`, `--bk-text`, `--bk-cyan`, ...) at the top of `_extensions/statmania/blogkit/styles.css`. To override them, add your own stylesheet:
 
 ```yaml
 format:
@@ -262,12 +262,13 @@ The data is a `.js` file, not JSON, on purpose. Browsers block `fetch()` on page
 ## Repository layout
 
 ```
-_extensions/blogkit/    the extension (copy this folder to use it anywhere)
+_extensions/blogkit/    the extension (installed as _extensions/statmania/blogkit/)
   _extension.yml        defines the blogkit-html format
   styles.css, theme-dark.scss, code-reveal.html, site-include.html
   blogkit.js            browser script
   build_site_data.py    pre-render hook
   publish.sh
+scripts/                starter-site hooks that find the extension and run it
 img/logo.svg            sample navbar logo (replace with yours)
 posts/, authors.yml, index.qmd, ...   the sample site and starter template
 docs/                   the built sample site
